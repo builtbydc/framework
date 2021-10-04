@@ -121,14 +121,15 @@ function QuestionBox(question, answers) {
                     Answer(answers[3], 3),
                     "qb-question-choices"),
                 "qb-section") +
-            Button(submitButtonText,"NO_DIV", "qb-submit", "", "onclick=" + ttF("submit")),
+            Button(submitButtonText, "NO_DIV", "qb-submit", "", "onclick=" + ttF("submit")),
             "qb-surround")
     );
 }
 
 function Answer(text, choice) {
     return (
-        P(text, "NO_DIV", "qb-answer" + ttE(choices[index], choice, " chosen"), "", "onclick=" + ttF("choose", index, choice))
+        P(text, "NO_DIV", "qb-answer" + (choices[index] === choice ? " chosen" : ""), "",
+            "onclick=" + ttF("choose", index, choice))
     );
 }
 
@@ -173,40 +174,41 @@ function op(tag, attributes) {
 function cl(tag) {
     return '</' + tag + '>';
 }
+//text transfer
+function ttL(text) {
+    return "'" + text + "'";
+}
+function ttE(ttE_a, ttE_b, text) {
+    if (ttE_a === ttE_b) return text;
+    else return '';
+}
+function ttNE(ttNE_a, ttNE_b, text) {
+    if (ttNE_a !== ttNE_b) return text;
+    else return '';
+}
+//up to 16 parameters!
+function ttF(functionName, ttF_a, ttF_b, ttF_c, ttF_d, ttF_e, ttF_f, ttF_g, ttF_h, ttF_i, ttF_j, ttF_k, ttF_l, ttF_m, ttF_n, ttF_o, ttF_p) {
+    return ttL(functionName + '(' + ttNE(ttF_a, undefined, ttF_a) +
+        ttNE(ttF_b, undefined, ', ' + ttF_b) + ttNE(ttF_c, undefined, ', ' + ttF_c) +
+        ttNE(ttF_d, undefined, ', ' + ttF_d) + ttNE(ttF_e, undefined, ', ' + ttF_e) +
+        ttNE(ttF_f, undefined, ', ' + ttF_f) + ttNE(ttF_g, undefined, ', ' + ttF_g) +
+        ttNE(ttF_h, undefined, ', ' + ttF_h) + ttNE(ttF_i, undefined, ', ' + ttF_i) +
+        ttNE(ttF_j, undefined, ', ' + ttF_j) + ttNE(ttF_k, undefined, ', ' + ttF_k) +
+        ttNE(ttF_l, undefined, ', ' + ttF_l) + ttNE(ttF_m, undefined, ', ' + ttF_m) +
+        ttNE(ttF_n, undefined, ', ' + ttF_n) + ttNE(ttF_o, undefined, ', ' + ttF_o) +
+        ttNE(ttF_p, undefined, ', ' + ttF_p) + ');');
+}
 //write attribute
 function wa(attr, text) {
-    return attr + '="' + text + '"' + sp();
+    return attr + '=' + ttL(text) + sp();
 }
-function waE(a, b, attr, text) {
-    if (a === b) return wa(attr, text);
+function waE(waE_a, waE_b, attr, text) {
+    if (waE_a === waE_b) return wa(attr, text);
     else return '';
 }
-function waNE(a, b, attr, text) {
-    if (a !== b) return wa(attr, text);
+function waNE(waNE_a, waNE_b, attr, text) {
+    if (waNE_a !== waNE_b) return wa(attr, text);
     else return '';
-}
-//text transfer
-function tt(text) {
-    return text + sp();
-}
-function ttE(a, b, text) {
-    if (a === b) return tt(text);
-    else return '';
-}
-function ttNE(a, b, text) {
-    if (a !== b) return tt(text);
-    else return '';
-}
-function ttF(functionName, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) {
-    return '"' + functionName + "(" + ttNE(a, undefined, a) +
-        ttNE(b, undefined, ", " + b) + ttNE(c, undefined, ", " + c) +
-        ttNE(d, undefined, ", " + d) + ttNE(e, undefined, ", " + e) +
-        ttNE(f, undefined, ", " + f) + ttNE(g, undefined, ", " + g) +
-        ttNE(h, undefined, ", " + h) + ttNE(i, undefined, ", " + i) +
-        ttNE(j, undefined, ", " + j) + ttNE(k, undefined, ", " + k) +
-        ttNE(l, undefined, ", " + l) + ttNE(m, undefined, ", " + m) +
-        ttNE(n, undefined, ", " + n) + ttNE(o, undefined, ", " + o) +
-        ttNE(p, undefined, ", " + p) + ");" + '"';
 }
 //parse undefined
 function pu(attr) {

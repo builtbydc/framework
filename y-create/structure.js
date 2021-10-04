@@ -29,13 +29,14 @@ function QuestionBox(question, answers) {
                     Answer(answers[3], 3),
                     "qb-question-choices"),
                 "qb-section") +
-            Button(submitButtonText,"NO_DIV", "qb-submit", "", "onclick=" + ttF("submit")),
+            Button(submitButtonText, "NO_DIV", "qb-submit", "", "onclick=" + ttF("submit")),
             "qb-surround")
     );
 }
 
 function Answer(text, choice) {
     return (
-        P(text, "NO_DIV", "qb-answer" + ttE(choices[index], choice, " chosen"), "", "onclick=" + ttF("choose", index, choice))
+        P(text, "NO_DIV", "qb-answer" + (choices[index] === choice ? " chosen" : ""), "",
+            "onclick=" + ttF("choose", index, choice))
     );
 }
