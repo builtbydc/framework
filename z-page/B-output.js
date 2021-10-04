@@ -213,21 +213,13 @@ function pu(attr) {
     if (attr === undefined) attr = '';
     return attr;
 }
-//parse className
-function pcn(className) {
-    if (className === undefined || className === '') className = '';
-    else className = ' ' + className;
-    return className;
-}
 
 function Div(contents, className, id, other) {
-    id = pu(id); other = pu(other);
-
-    className = pcn(className);
+    className = pu(className); id = pu(id); other = pu(other);
     return (
         op("div",
             waNE(id, "", "id", id) +
-            wa("class", ("Div" + className)) +
+            waNE(className, "", "class", className) +
             other
 
         ) + contents + cl("div")
@@ -238,14 +230,14 @@ function A(href, target, contents, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
-        className = pcn(className);
+        className = pu(className);
 
         return (
             op("a",
                 wa("href", href) +
                 waNE(target, "download", "target", target) +
                 waNE(id, "", "id", id) +
-                wa("class", ("anchor" + className)) +
+                waNE(className, "", "class", className) +
                 other +
                 ttE(target, "download", "download")
 
@@ -253,11 +245,11 @@ function A(href, target, contents, divClassName, className, id, other) {
         );
 
     } else {
-        divClassName = pcn(divClassName);
+        divClassName = pu(divClassName);
 
         return (Div(
             A(href, target, contents, "NO_DIV", className, id, other),
-            "A" + divClassName)
+            divClassName)
         );
 
     }
@@ -266,23 +258,23 @@ function H(size, text, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
-        className = pcn(className);
+        className = pu(className);
 
         return (
             op("h" + size,
                 waNE(id, "", "id", id) +
-                wa("class", ("header-" + size + className)) +
+                waNE(className, "", "class", className) +
                 other
 
             ) + text + cl("h" + size)
         );
 
     } else {
-        divClassName = pcn(divClassName);
+        divClassName = pu(divClassName);
 
         return (Div(
             H(size, text, "NO_DIV", className, id, other),
-            "H" + divClassName)
+            divClassName)
         );
 
     }
@@ -291,7 +283,7 @@ function Img(src, alt, width, height, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
-        className = pcn(className);
+        className = pu(className);
 
         return (
             op("img",
@@ -300,18 +292,18 @@ function Img(src, alt, width, height, divClassName, className, id, other) {
                 wa("width", width) +
                 wa("height", height) +
                 waNE(id, "", "id", id) +
-                wa("class", ("image" + className)) +
+                waNE(className, "", "class", className) +
                 other
 
             )
         );
 
     } else {
-        divClassName = pcn(divClassName);
+        divClassName = pu(divClassName);
 
         return (Div(
             Img(src, alt, width, height, "NO_DIV", className, id, other),
-            "Img" + divClassName)
+            divClassName)
         );
 
     }
@@ -320,24 +312,24 @@ function P(text, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
-        className = pcn(className);
+        className = pu(className);
 
         return (
             op("p",
                 //attributes
                 waNE(id, "", "id", id) +
-                wa("class", ("paragraph" + className)) +
+                waNE(className, "", "class", className) +
                 other
 
             ) + text + cl("p")
         );
 
     } else {
-        divClassName = pcn(divClassName);
+        divClassName = pu(divClassName);
 
         return (Div(
             P(text, "NO_DIV", className, id, other),
-            "P" + divClassName)
+            divClassName)
         );
 
     }
@@ -346,24 +338,24 @@ function Button(contents, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
-        className = pcn(className);
+        className = pu(className);
 
         return (
             op("button",
                 wa("type", "button") +
                 waNE(id, "", "id", id) +
-                wa("class", ("button" + className)) +
+                waNE(className, "", "class", className) +
                 other
 
             ) + contents + cl("button")
         );
 
     } else {
-        divClassName = pcn(divClassName);
+        divClassName = pu(divClassName);
 
         return (Div(
             Button(contents, "NO_DIV", className, id, other),
-            "Button" + divClassName)
+            divClassName)
         );
 
     }

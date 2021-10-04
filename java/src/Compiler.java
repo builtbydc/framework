@@ -37,10 +37,6 @@ public class Compiler {
 			System.out.println("B-output.js did not exist");
 		output.createNewFile();
 
-		if (!styleOut.delete())
-			System.out.println("C-style.css did not exist");
-		styleOut.createNewFile();
-
 		fileScanner = new Scanner(setup);
 		while (fileScanner.hasNextLine())
 			contents = contents + fileScanner.nextLine() + "\n";
@@ -65,8 +61,11 @@ public class Compiler {
 
 		while (contentsScanner.hasNextLine())
 			writer.write(contentsScanner.nextLine() + "\n");
-
 		writer.flush();
+
+		if (!styleOut.delete())
+			System.out.println("C-style.css did not exist");
+		styleOut.createNewFile();
 
 		fileScanner = new Scanner(styleIn);
 		contents = "";
