@@ -79,8 +79,7 @@ public class Compiler {
 			writer.write(contentsScanner.nextLine() + "\n");
 		writer.flush();
 
-		Desktop desktop = Desktop.getDesktop();
-		desktop.open(new File("./z-page/A-page.html"));
+		Desktop.getDesktop().open(new File("./z-page/A-page.html"));
 	}
 
 }
