@@ -21,11 +21,11 @@ public class Compiler {
 	static BufferedWriter writer;
 
 	public static void main(String[] args) throws IOException {
-		setup = new File("./y-library/A-setup.js");
-		source = new File("./z-create/source.js");
-		structure = new File("./z-create/structure.js");
-		components = new File("./y-library/B-components.js");
-		output = new File("./output.js");
+		setup = new File("./x-library/A-setup.js");
+		source = new File("./y-create/source.js");
+		structure = new File("./y-create/structure.js");
+		components = new File("./x-library/B-components.js");
+		output = new File("./z-page/output.js");
 		if (!output.delete())
 			System.out.println("output.js did not exist");
 
@@ -59,7 +59,7 @@ public class Compiler {
 		writer.flush();
 
 		Desktop desktop = Desktop.getDesktop();
-		desktop.open(new File("./page.html"));
+		desktop.open(new File("./z-page/page.html"));
 	}
 
 }
