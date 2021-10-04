@@ -13,6 +13,9 @@ public class Compiler {
 	static File components;
 	static File output;
 
+	static File styleIn;
+	static File styleOut;
+
 	static Scanner fileScanner;
 	static Scanner contentsScanner;
 
@@ -25,11 +28,18 @@ public class Compiler {
 		source = new File("./y-create/source.js");
 		structure = new File("./y-create/structure.js");
 		components = new File("./x-library/B-components.js");
-		output = new File("./z-page/output.js");
-		if (!output.delete())
-			System.out.println("output.js did not exist");
+		output = new File("./z-page/B-output.js");
 
+		styleIn = new File("./y-create/style.css");
+		styleOut = new File("./z-page/C-style.css");
+
+		if (!output.delete())
+			System.out.println("B-output.js did not exist");
 		output.createNewFile();
+
+		if (!styleOut.delete())
+			System.out.println("C-style.css did not exist");
+		styleOut.createNewFile();
 
 		fileScanner = new Scanner(setup);
 		while (fileScanner.hasNextLine())
@@ -58,8 +68,20 @@ public class Compiler {
 
 		writer.flush();
 
+		fileScanner = new Scanner(styleIn);
+		contents = "";
+		while (fileScanner.hasNextLine())
+			contents = contents + fileScanner.nextLine() + "\n";
+
+		writer = new BufferedWriter(new FileWriter(styleOut));
+		contentsScanner = new Scanner(contents);
+
+		while (contentsScanner.hasNextLine())
+			writer.write(contentsScanner.nextLine() + "\n");
+		writer.flush();
+
 		Desktop desktop = Desktop.getDesktop();
-		desktop.open(new File("./z-page/page.html"));
+		desktop.open(new File("./z-page/A-page.html"));
 	}
 
 }
