@@ -1,42 +1,21 @@
 function Structure() {
     return (
-        QuestionHeader() +
-        QuestionBox(questions[index], answers[index])
+        ExampleHeader() +
+        ExamplePage()
     );
 }
 
-const pageTitle = "Quiz App";
+const pageTitle = "Example Page";
 
-function QuestionHeader() {
+function ExampleHeader() {
     return (
         Div(
-            Div("", "arrow arrow-left", "", "onclick=" + ttF("previousQuestion")) +
-            P(questionTitle(), "NO_DIV") +
-            Div("", "arrow arrow-right", "", "onclick=" + ttF("nextQuestion")),
-            "header")
+            H(1, "Example Page", "NO_DIV", "header-text"), "header")
     );
 }
 
-function QuestionBox(question, answers) {
+function ExamplePage() {
     return (
-        Div(
-            Div(
-                H(1, question, "NO_DIV", "qb-question-title") +
-                Div(
-                    Answer(answers[0], 0) +
-                    Answer(answers[1], 1) +
-                    Answer(answers[2], 2) +
-                    Answer(answers[3], 3),
-                    "qb-question-choices"),
-                "qb-section") +
-            Button(submitButtonText, "NO_DIV", "qb-submit", "", "onclick=" + ttF("submit")),
-            "qb-surround")
-    );
-}
-
-function Answer(text, choice) {
-    return (
-        P(text, "NO_DIV", "qb-answer" + (choices[index] === choice ? " chosen" : ""), "",
-            "onclick=" + ttF("choose", index, choice))
+        P(firstParagraph, "paragraph-holder", "text")
     );
 }

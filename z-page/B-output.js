@@ -3,133 +3,27 @@ function loadPage() {
     document.getElementById("contents").innerHTML = Structure();
 }
 
-const numberOfQuestions = 10;
-var index = 0;
-
-var submitButtonText = "Submit";
-
-var choices = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
-
-const correctAnswers = [0,1,2,3,0,1,2,3,0,1];
-
-const questions = [
-    "What is NoHTML?",
-    "Do you like cheese?",
-    "What is 9+10?",
-    "What is your cat's name?",
-    "What year did John Travolta become President?",
-    "Is it cool to take a bath in an Airbnb?",
-    "Who is the developer of this framework?",
-    "Are you happy?",
-    "Are you having fun?",
-    "What day is it?",
-    ""
-];
-
-const answers = [
-    ["a js framework", "b js framework", "c js framework", "d js framework"],
-    ["yes", "absolutely", "of course", "isn't everyone"],
-    ["18", "19", "20", "21"],
-    ["Harold", "gerald", "Meryld", "Barryld"],
-    ["1994", "2045", "1832", "987"],
-    ["yes", "no", "yes", "no"],
-    ["daniel", "a moron", "potato chip", "boy"],
-    [";)", ":)", "smile", "yes"],
-    ["yes", "yes", "yes", "yes"],
-    ["Today", "the third", "tuesday", "mind your own business"],
-    ["","","",""]
-];
-
-function questionTitle() {
-    if(index < numberOfQuestions) return "Question " + (index+1);
-    else return "Results";
-}
-
-function updateInfo() {
-    if(index < numberOfQuestions-1) submitButtonText = "Submit";
-    if(index===numberOfQuestions-1) submitButtonText="Submit Quiz";
-    if(index===numberOfQuestions){
-        questions[numberOfQuestions] = ("Congrats! You got " + score() + " out of " + numberOfQuestions + " correct!");
-        submitButtonText="Share";
-    }
-}
-
-function allAnswered() {
-    var out = true;
-    for(var i = 0; i < numberOfQuestions; i++) 
-        if(choices[i]===-1) out = false;
-    return out;
-}
-
-function previousQuestion() {
-    if (index > 0) index--;
-    updateInfo();
-    loadPage();
-}
-
-function nextQuestion() {
-    if (index < numberOfQuestions-1 || (index===numberOfQuestions-1 && allAnswered())) index++;
-    updateInfo();
-    loadPage();
-}
-
-function choose(index, choice) {
-    choices[index] = choice;
-    loadPage();
-}
-
-function submit() {
-    if(choices[index]!==-1) 
-        nextQuestion();
-}
-
-function score() {
-    var out = 0;
-    for(var i = 0; i < 10; i++)
-        if(choices[i]===correctAnswers[i]) out++;
-    return out;
-}
+var firstParagraph = "Turtles are an order of reptiles known as Testudines; characterized by a shell developed from their skeleton. Turtles were historically considered part of a group of reptiles known as Anapsida but more recent studies place them with other modern reptiles and birds in Diapsida, usually closer to Archosauria (crocodilians and birds) than Lepidosauria (tuataras, lizards and snakes). Modern turtles are divided into two major groups, the Pleurodira (side necked turtles) and Cryptodira (hidden neck turtles) which differ in the way the head is retracted. There are 360 recent (after 1500 AD) species of turtles and include tortoises and terrapins; which are widely distributed across the world's continents and oceans."
 
 function Structure() {
     return (
-        QuestionHeader() +
-        QuestionBox(questions[index], answers[index])
+        ExampleHeader() +
+        ExamplePage()
     );
 }
 
-const pageTitle = "Quiz App";
+const pageTitle = "Example Page";
 
-function QuestionHeader() {
+function ExampleHeader() {
     return (
         Div(
-            Div("", "arrow arrow-left", "", "onclick=" + ttF("previousQuestion")) +
-            P(questionTitle(), "NO_DIV") +
-            Div("", "arrow arrow-right", "", "onclick=" + ttF("nextQuestion")),
-            "header")
+            H(1, "Example Page", "NO_DIV", "header-text"), "header")
     );
 }
 
-function QuestionBox(question, answers) {
+function ExamplePage() {
     return (
-        Div(
-            Div(
-                H(1, question, "NO_DIV", "qb-question-title") +
-                Div(
-                    Answer(answers[0], 0) +
-                    Answer(answers[1], 1) +
-                    Answer(answers[2], 2) +
-                    Answer(answers[3], 3),
-                    "qb-question-choices"),
-                "qb-section") +
-            Button(submitButtonText, "NO_DIV", "qb-submit", "", "onclick=" + ttF("submit")),
-            "qb-surround")
-    );
-}
-
-function Answer(text, choice) {
-    return (
-        P(text, "NO_DIV", "qb-answer" + (choices[index] === choice ? " chosen" : ""), "",
-            "onclick=" + ttF("choose", index, choice))
+        P(firstParagraph, "paragraph-holder", "text")
     );
 }
 
