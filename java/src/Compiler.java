@@ -28,13 +28,13 @@ public class Compiler {
 		source = new File("./y-create/source.js");
 		structure = new File("./y-create/structure.js");
 		components = new File("./x-library/B-components.js");
-		output = new File("./z-page/B-output.js");
+		output = new File("./docs/output.js");
 
 		styleIn = new File("./y-create/style.css");
-		styleOut = new File("./z-page/C-style.css");
+		styleOut = new File("./docs/style.css");
 
 		if (!output.delete())
-			System.out.println("B-output.js did not exist");
+			System.out.println("output.js did not exist");
 		output.createNewFile();
 
 		fileScanner = new Scanner(setup);
@@ -64,7 +64,7 @@ public class Compiler {
 		writer.flush();
 
 		if (!styleOut.delete())
-			System.out.println("C-style.css did not exist");
+			System.out.println("style.css did not exist");
 		styleOut.createNewFile();
 
 		fileScanner = new Scanner(styleIn);
@@ -79,7 +79,7 @@ public class Compiler {
 			writer.write(contentsScanner.nextLine() + "\n");
 		writer.flush();
 
-		Desktop.getDesktop().open(new File("./z-page/A-page.html"));
+		Desktop.getDesktop().open(new File("./docs/index.html"));
 	}
 
 }
