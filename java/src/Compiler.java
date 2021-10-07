@@ -24,13 +24,13 @@ public class Compiler {
 	static BufferedWriter writer;
 
 	public static void main(String[] args) throws IOException {
-		setup = new File("./x-library/A-setup.js");
-		source = new File("./y-create/source.js");
-		structure = new File("./y-create/structure.js");
-		components = new File("./x-library/B-components.js");
+		setup = new File("./library/setup.js");
+		source = new File("./create/source.js");
+		structure = new File("./create/structure.js");
+		components = new File("./library/components.js");
 		output = new File("./docs/output.js");
 
-		styleIn = new File("./y-create/style.css");
+		styleIn = new File("./create/style.css");
 		styleOut = new File("./docs/style.css");
 
 		if (!output.delete())

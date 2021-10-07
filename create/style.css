@@ -1,16 +1,5 @@
-@font-face {
-    font-family: "junegull";
-    src: url("./assets/junegull.ttf");
-}
-
-@font-face {
-    font-family: "ubuntu";
-    src: url("./assets/Ubuntu-Title.ttf");
-}
-
 * {
     margin: 0;
-    font-family: "ubuntu";
 }
 
 #contents {
@@ -43,5 +32,4 @@
     margin-right: 5vw;
     margin-top: 5vh;
     margin-bottom: 5vh;
-    font-family: "ubuntu";
 }
