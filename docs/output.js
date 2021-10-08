@@ -17,13 +17,16 @@ const pageTitle = "Example Page";
 function ExampleHeader() {
     return (
         Div(
-            H(1, "Example Page", "NO_DIV", "header-text"), "header")
+            H(1, "LearnAboutTurtles.com", "NO_DIV", "header-text"),
+            "header")
     );
 }
 
 function ExamplePage() {
     return (
-        P(firstParagraph, "paragraph-holder", "text")
+        Div(
+            P(firstParagraph, "paragraph-holder", "text"),
+            "center", "content-below-header")
     );
 }
 

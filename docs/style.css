@@ -1,35 +1,80 @@
+@font-face {
+    font-family: "Aharoni";
+    src: url("./assets/Aharoni.ttf");
+}
+
 * {
     margin: 0;
+    padding: 0;
 }
 
 #contents {
-    width: 100vw;
     height: 100vh;
-    background: #fff2f1;
+
+    background: rgba(179,136,235,1);
 }
 
 .header {
     width: 100%;
-    height: auto;
-    background: rgb(227, 181, 5);
-    background: linear-gradient(225deg, rgba(227, 181, 5, 1) 0%, rgba(236, 115, 87, 1) 52%, rgba(255, 242, 241, 1) 69%, rgba(160, 26, 134, 1) 99%);
-    text-shadow: 0em 0em .6em rgba(0, 0, 0, .6);
-    box-shadow: 0em 1em 2em rgba(0, 0, 0, .4);
+    height: 12vh;
+
+    background: rgb(128,147,241);
+    background: radial-gradient(circle, 
+        rgba(128,147,241,1) 0%, 
+        rgba(179,136,235,1) 8%, 
+        rgba(255,149,140,1) 48%, 
+        rgba(255,188,66,1) 100%);
+
+    border-bottom: 1vh solid white;
+
+    box-shadow: 0 0 2vh black;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    position: relative;
+    z-index: 2;
 }
 
 .header-text {
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-    color: #fff2f1;
-    font-size: 6em;
+    font-family:"Aharoni", 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 7.5vh;
+    color: white;
+    text-shadow: black .7vh .7vh;
+}
+
+#content-below-header {
+    height: 86vh;
+
+    position: relative;
+    z-index: 1;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paragraph-holder {
+    width: 50vw;
+    height: 100%;
+
+    background: rgba(255,255,255,.6);
+    border: 1vh solid white;
+
+    box-shadow: 0 0 2vh black;
 }
 
 .text {
-    margin-left: 5vw;
-    margin-right: 5vw;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    margin-left: 6vh;
+    margin-right: 6vh;
+
+    font-family: Helvetica, sans-serif;
+    font-size: 2vh;
+
+    line-height: 2;
 }
