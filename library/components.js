@@ -227,3 +227,10 @@ function Button(contents, divClassName, className, id, other) {
 
     }
 }
+function B(contents) {
+    return (
+        op("b") +
+        contents +
+        cl("b")
+    )
+}
