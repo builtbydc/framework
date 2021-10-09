@@ -12,6 +12,8 @@
     height: 100vh;
 
     background: rgba(179,136,235,1);
+
+    overflow-y: auto;
 }
 
 .header {
@@ -27,7 +29,7 @@
 
     border-bottom: 1vh solid white;
 
-    box-shadow: 0 0 2vh black;
+    box-shadow: 0 0 .5em black;
 
     display: flex;
     align-items: center;
@@ -39,13 +41,14 @@
 
 .header-text {
     font-family:"Aharoni", 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 7.5vh;
+    font-size: 3em;
     color: white;
-    text-shadow: black .7vh .7vh;
+    text-shadow: black .1em .1em;
 }
 
 #content-below-header {
-    height: 86vh;
+    height: auto;
+    min-height: 86vh;
 
     position: relative;
     z-index: 1;
@@ -59,22 +62,22 @@
 
 .paragraph-holder {
     width: 50vw;
-    height: 100%;
+    height: auto;
+    min-height: 86vh;
 
     background: rgba(255,255,255,.6);
-    border: 1vh solid white;
+    border-bottom: 1vh solid white;
+    border-left: 1vh solid white;
+    border-right: 1vh solid white;
 
-    box-shadow: 0 0 2vh black;
+    box-shadow: 0 0 .5em black;
 }
 
 .text {
-    margin-top: 4vh;
-    margin-bottom: 4vh;
-    margin-left: 6vh;
-    margin-right: 6vh;
+    margin: 5%;
 
     font-family: Helvetica, sans-serif;
-    font-size: 2vh;
+    font-size: 1em;
 
     line-height: 2;
 }
