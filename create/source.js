@@ -1,1 +1,7 @@
-var firstParagraph = B("Turtles are an order of reptiles known as Testudines;") + " characterized by a shell developed from their skeleton. Turtles were historically considered part of a group of reptiles known as Anapsida but more recent studies place them with other modern reptiles and birds in Diapsida, usually closer to Archosauria (crocodilians and birds) than Lepidosauria (tuataras, lizards and snakes). Modern turtles are divided into two major groups, the Pleurodira (side necked turtles) and Cryptodira (hidden neck turtles) which differ in the way the head is retracted. There are 360 recent (after 1500 AD) species of turtles and include tortoises and terrapins; which are widely distributed across the world's continents and oceans."
+function switchState(state) {
+    var result = "";
+    if (state === "disabled") result = "enabled";
+    else result = "disabled";
+    loadPage();
+    return result;
+}

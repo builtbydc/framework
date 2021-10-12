@@ -3,32 +3,99 @@ function loadPage() {
     document.getElementById("contents").innerHTML = Structure();
 }
 
-var firstParagraph = B("Turtles are an order of reptiles known as Testudines;") + " characterized by a shell developed from their skeleton. Turtles were historically considered part of a group of reptiles known as Anapsida but more recent studies place them with other modern reptiles and birds in Diapsida, usually closer to Archosauria (crocodilians and birds) than Lepidosauria (tuataras, lizards and snakes). Modern turtles are divided into two major groups, the Pleurodira (side necked turtles) and Cryptodira (hidden neck turtles) which differ in the way the head is retracted. There are 360 recent (after 1500 AD) species of turtles and include tortoises and terrapins; which are widely distributed across the world's continents and oceans."
-
-function Structure() {
-    return (
-        ExampleHeader() +
-        ExamplePage()
-    );
+function switchState(state) {
+    var result = "";
+    if (state === "disabled") result = "enabled";
+    else result = "disabled";
+    loadPage();
+    return result;
 }
 
 const pageTitle = "Example Page";
 
-function ExampleHeader() {
+function Structure() {
+    return build([
+        PageHeader(),
+
+    ]);
+}
+
+function PageHeader() {
+    return build([
+        Header(
+            build([
+                LeftHeader(),
+                CenterHeader(),
+                RightHeader()
+            ])
+        )
+    ]);
+}
+
+function LeftHeader() {
+    return build([
+        Toolbox()
+    ]);
+}
+function Toolbox() {
+    return build([
+        StateCycler(sc_1)
+    ]);
+}
+
+const DEFAULT_STATES = ["red", "blue"];
+
+const sc_1 = {
+    id: "sc_1",
+    states: DEFAULT_STATES, state: 0,
+    contents: "switch 1"
+};
+
+function StateCycler(sc) {
+    sc.className = pu(sc.className)
     return (
         Div(
-            H(1, "LearnAboutTurtles.com", "NO_DIV", "header-text"),
-            "header")
+            Button(sc.contents, "NO_DIV",
+                sc.className === "" ? sc.states[sc.state] : sc.className + " " + sc.states[sc.state],
+                sc.name,
+                "onclick=" + ttF("cycleState", sc.id)
+            ),
+
+            "", sc.id + "_holder")
     );
 }
 
-function ExamplePage() {
-    return (
-        Div(
-            P(firstParagraph, "paragraph-holder", "text"),
-            "center", "content-below-header")
-    );
+function cycleState(sc) {
+    sc.state++;
+    sc.state %= sc.states.length;
+    counter++;
+
+    document.getElementById(sc_1.id + "_holder").innerHTML = StateCycler(sc);
 }
+
+function CenterHeader() {
+    return build([
+        Title()
+    ]);
+}
+var counter = 0;
+function Title() {
+    return build([
+        P(B("Website" + counter), "", "title", "", "onclick=" + ttF("loadPage"))
+    ]);
+}
+
+function RightHeader() {
+    return build([
+        Menu()
+    ]);
+}
+function Menu() {
+    return build([
+
+    ]);
+}
+
 
 /*
 
@@ -113,6 +180,13 @@ function pu(attr) {
     return attr;
 }
 
+function build(arr) {
+    var out = "";
+    for (var i = 0; i < arr.length; i++)
+        out = out + arr[i];
+    return out;
+}
+
 function Div(contents, className, id, other) {
     className = pu(className); id = pu(id); other = pu(other);
     return (
@@ -122,6 +196,30 @@ function Div(contents, className, id, other) {
             other
 
         ) + contents + cl("div")
+    );
+}
+
+function Header(contents, className, id, other) {
+    className = pu(className); id = pu(id); other = pu(other);
+    return (
+        op("header",
+            waNE(id, "", "id", id) +
+            waNE(className, "", "class", className) +
+            other
+
+        ) + contents + cl("header")
+    );
+}
+
+function Section(contents, className, id, other) {
+    className = pu(className); id = pu(id); other = pu(other);
+    return (
+        op("section",
+            waNE(id, "", "id", id) +
+            waNE(className, "", "class", className) +
+            other
+
+        ) + contents + cl("section")
     );
 }
 

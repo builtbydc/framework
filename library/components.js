@@ -81,6 +81,13 @@ function pu(attr) {
     return attr;
 }
 
+function build(arr) {
+    var out = "";
+    for (var i = 0; i < arr.length; i++)
+        out = out + arr[i];
+    return out;
+}
+
 function Div(contents, className, id, other) {
     className = pu(className); id = pu(id); other = pu(other);
     return (
@@ -90,6 +97,30 @@ function Div(contents, className, id, other) {
             other
 
         ) + contents + cl("div")
+    );
+}
+
+function Header(contents, className, id, other) {
+    className = pu(className); id = pu(id); other = pu(other);
+    return (
+        op("header",
+            waNE(id, "", "id", id) +
+            waNE(className, "", "class", className) +
+            other
+
+        ) + contents + cl("header")
+    );
+}
+
+function Section(contents, className, id, other) {
+    className = pu(className); id = pu(id); other = pu(other);
+    return (
+        op("section",
+            waNE(id, "", "id", id) +
+            waNE(className, "", "class", className) +
+            other
+
+        ) + contents + cl("section")
     );
 }
 
