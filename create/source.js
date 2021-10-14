@@ -1,7 +1,1 @@
-function switchState(state) {
-    var result = "";
-    if (state === "disabled") result = "enabled";
-    else result = "disabled";
-    loadPage();
-    return result;
-}
+const sc_1 = new StateCycler("sc_1", "hello", "padded white-text");

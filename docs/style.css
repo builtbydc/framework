@@ -11,29 +11,21 @@
     background: black;
 }
 
-header {
-    width: 100vw;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+button {
+    cursor: pointer;
 }
-
-.title {
-    font-size: 3em;
-    color: white;
-}
-
-.red {
+.disabled {
     background: red;
 }
-.green {
+.enabled {
     background: green;
-}
-.blue {
-    background: blue;
 }
 
 .padded {
     padding: 5vh;
+    border: none;
+}
+.white-text {
+    font-size: 2em;
+    color: white;
 }

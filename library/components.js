@@ -31,58 +31,63 @@ function Tag(attributes, contents, divClassName, className, id, other) {
 
 //space, open tag, close tag
 function sp() {
-    return ' ';
+    return " ";
 }
 function op(tag, attributes) {
-    return '<' + tag + sp() + attributes + '>';
+    return "<" + tag + sp() + attributes + ">";
+}
+function opNA(tag) {
+    return "<" + tag + ">";
 }
 function cl(tag) {
-    return '</' + tag + '>';
+    return "</" + tag + ">";
 }
 //text transfer
 function ttL(text) {
-    return "'" + text + "'";
+    return '"' + text + '"';
 }
 function ttE(ttE_a, ttE_b, text) {
     if (ttE_a === ttE_b) return text;
-    else return '';
+    else return "";
 }
 function ttNE(ttNE_a, ttNE_b, text) {
     if (ttNE_a !== ttNE_b) return text;
-    else return '';
+    else return "";
 }
-//up to 16 parameters!
-function ttF(functionName, ttF_a, ttF_b, ttF_c, ttF_d, ttF_e, ttF_f, ttF_g, ttF_h, ttF_i, ttF_j, ttF_k, ttF_l, ttF_m, ttF_n, ttF_o, ttF_p) {
-    return ttL(functionName + '(' + ttNE(ttF_a, undefined, ttF_a) +
-        ttNE(ttF_b, undefined, ', ' + ttF_b) + ttNE(ttF_c, undefined, ', ' + ttF_c) +
-        ttNE(ttF_d, undefined, ', ' + ttF_d) + ttNE(ttF_e, undefined, ', ' + ttF_e) +
-        ttNE(ttF_f, undefined, ', ' + ttF_f) + ttNE(ttF_g, undefined, ', ' + ttF_g) +
-        ttNE(ttF_h, undefined, ', ' + ttF_h) + ttNE(ttF_i, undefined, ', ' + ttF_i) +
-        ttNE(ttF_j, undefined, ', ' + ttF_j) + ttNE(ttF_k, undefined, ', ' + ttF_k) +
-        ttNE(ttF_l, undefined, ', ' + ttF_l) + ttNE(ttF_m, undefined, ', ' + ttF_m) +
-        ttNE(ttF_n, undefined, ', ' + ttF_n) + ttNE(ttF_o, undefined, ', ' + ttF_o) +
-        ttNE(ttF_p, undefined, ', ' + ttF_p) + ');');
+function ttF(functionName, functionParameters) {
+    let out = functionName + "(";
+    if (pu(functionParameters) !== "") {
+        for (let i = 0; i < functionParameters.length; i++) {
+            if (i !== 0) out += ", ";
+            out += functionParameters[i];
+        }
+    }
+    out += ");";
+    return ttL(out);
+}
+function onClick(functionName, functionParameters) {
+    return "onclick=" + ttF(functionName, pu(functionParameters));
 }
 //write attribute
 function wa(attr, text) {
-    return attr + '=' + ttL(text) + sp();
+    return attr + "=" + ttL(text) + sp();
 }
 function waE(waE_a, waE_b, attr, text) {
     if (waE_a === waE_b) return wa(attr, text);
-    else return '';
+    else return "";
 }
 function waNE(waNE_a, waNE_b, attr, text) {
     if (waNE_a !== waNE_b) return wa(attr, text);
-    else return '';
+    else return "";
 }
 //parse undefined
-function pu(attr) {
-    if (attr === undefined) attr = '';
-    return attr;
+function pu(text) {
+    if (text === undefined) text = "";
+    return text;
 }
 
 function build(arr) {
-    var out = "";
+    let out = "";
     for (var i = 0; i < arr.length; i++)
         out = out + arr[i];
     return out;
@@ -260,7 +265,7 @@ function Button(contents, divClassName, className, id, other) {
 }
 function B(contents) {
     return (
-        op("b") +
+        opNA("b") +
         contents +
         cl("b")
     )

@@ -24,7 +24,7 @@ public class Compiler {
 	static BufferedWriter writer;
 
 	public static void main(String[] args) throws IOException {
-		setup = new File("./library/setup.js");
+		setup = new File("./library/constructs.js");
 		source = new File("./create/source.js");
 		structure = new File("./create/structure.js");
 		components = new File("./library/components.js");
