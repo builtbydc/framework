@@ -1,34 +1,3 @@
-/*
-
-function Tag(attributes, contents, divClassName, className, id, other) {
-    id = pu(id); other = pu(other);
-
-    if(divClassName === "NO_DIV") {
-        className = pcn(className);
-
-        return(
-            op("tag",
-                //attributes
-                waNE(id, "", "id", id) +   
-                wa("class", ("tag++" + className)) +
-                other
-
-            ) + contents + cl("tag")
-        );
-
-    } else {
-        divClassName = pcn(divClassName);
-
-        return( Div(
-            Tag(attributes, contents, "NO_DIV", className, id, other),
-            "Tag"+ divClassName)
-        );
-
-    }
-}
-
-*/
-
 //space, open tag, close tag
 function sp() {
     return " ";
