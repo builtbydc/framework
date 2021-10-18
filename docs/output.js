@@ -1,87 +1,3 @@
-class StateCycler {
-    constructor(id, contents, className, states, state) {
-        this.id = id;
-        contents = pu(contents); this.contents = contents;
-
-        this.className = "state-cycler";
-        if (pu(className) !== "") this.className = this.className + " " + className;
-
-        this.states = ["disabled", "enabled"]; this.state = 0;
-        if (pu(states) !== "") this.states = states;
-        if (pu(state) !== "") this.state = state;
-    }
-
-    create() {
-        return Div(this.load(), "", this.id + "_container");
-    }
-
-    load() {
-        return Button(
-            this.contents, "NO_DIV",
-            this.className + " " + this.states[this.state],
-            this.id, onClick(this.id + "." + "handleClick")
-        );
-    }
-
-    cycle() {
-        this.state++;
-        this.state %= this.states.length;
-        document.getElementById(this.id + "_container").innerHTML = this.load();
-    }
-
-    handleClick() {
-        this.cycle(); this.action();
-    }
-
-    action() { }
-}
-
-const sc_1 = new StateCycler("sc_1", "hello", "padded white-text");
-
-const pageTitle = "Example Page";
-
-function loadPage() {
-    document.getElementById("page-title").innerHTML = pageTitle;
-    document.getElementById("contents").innerHTML = Structure();
-}
-
-function Structure() {
-    return build([
-        sc_1.create(),
-    ]);
-}
-
-/*
-
-function Tag(attributes, contents, divClassName, className, id, other) {
-    id = pu(id); other = pu(other);
-
-    if(divClassName === "NO_DIV") {
-        className = pcn(className);
-
-        return(
-            op("tag",
-                //attributes
-                waNE(id, "", "id", id) +   
-                wa("class", ("tag++" + className)) +
-                other
-
-            ) + contents + cl("tag")
-        );
-
-    } else {
-        divClassName = pcn(divClassName);
-
-        return( Div(
-            Tag(attributes, contents, "NO_DIV", className, id, other),
-            "Tag"+ divClassName)
-        );
-
-    }
-}
-
-*/
-
 //space, open tag, close tag
 function sp() {
     return " ";
@@ -323,3 +239,60 @@ function B(contents) {
         cl("b")
     )
 }
+
+class StateCycler {
+    constructor(id, contents, className, states, state) {
+        this.id = id;
+        contents = pu(contents); this.contents = contents;
+
+        this.className = "state-cycler";
+        if (pu(className) !== "") this.className = this.className + " " + className;
+
+        this.states = ["disabled", "enabled"]; this.state = 0;
+        if (pu(states) !== "") this.states = states;
+        if (pu(state) !== "") this.state = state;
+    }
+
+    create() {
+        return Div(this.load(), "", this.id + "_container");
+    }
+
+    load() {
+        return Button(
+            this.contents, "NO_DIV",
+            this.className + " " + this.states[this.state],
+            this.id, onClick(this.id + "." + "handleClick")
+        );
+    }
+
+    cycle() {
+        this.state++;
+        this.state %= this.states.length;
+        document.getElementById(this.id + "_container").innerHTML = this.load();
+    }
+
+    handleClick() {
+        this.cycle(); this.action();
+    }
+
+    action() { }
+}
+
+const sc_1 = new StateCycler("sc_1", "hello", "padded white-text");
+sc_1.action = function () {
+
+}
+
+const pageTitle = "Example Page";
+
+function loadPage() {
+    document.getElementById("page-title").innerHTML = pageTitle;
+    document.getElementById("contents").innerHTML = Structure();
+}
+
+function Structure() {
+    return build([
+        sc_1.create(),
+    ]);
+}
+

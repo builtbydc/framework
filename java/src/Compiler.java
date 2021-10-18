@@ -1,83 +1,53 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.awt.Desktop;
 
 public class Compiler {
 
-	static File setup;
-	static File source;
-	static File structure;
-	static File components;
-	static File output;
+	static void combineFiles(File[] inputFiles, File outputFile) throws IOException {
+		if (!outputFile.delete())
+			System.out.println("Output file did not exist.");
+		outputFile.createNewFile();
 
-	static File styleIn;
-	static File styleOut;
+		String contents = "";
+		Scanner fileScanner, contentsScanner;
+		BufferedWriter writer;
 
-	static Scanner fileScanner;
-	static Scanner contentsScanner;
+		for (File file : inputFiles) {
+			fileScanner = new Scanner(file);
+			while (fileScanner.hasNextLine())
+				contents += fileScanner.nextLine() + "\n";
+			contents += "\n";
+			fileScanner.close();
+		}
 
-	static String contents = "";
+		contentsScanner = new Scanner(contents);
+		writer = new BufferedWriter(new FileWriter(outputFile));
 
-	static BufferedWriter writer;
+		while (contentsScanner.hasNextLine())
+			writer.write(contentsScanner.nextLine() + "\n");
+		writer.flush();
+
+		contentsScanner.close();
+		writer.close();
+
+	}
 
 	public static void main(String[] args) throws IOException {
-		setup = new File("./library/constructs.js");
-		source = new File("./create/source.js");
-		structure = new File("./create/structure.js");
-		components = new File("./library/components.js");
-		output = new File("./docs/output.js");
+		File[] inputJSFiles = { new File("./library/components.js"), new File("./library/constructs.js"),
+				new File("./create/source.js"), new File("./create/structure.js") };
 
-		styleIn = new File("./create/style.css");
-		styleOut = new File("./docs/style.css");
+		File outputJSFile = new File("./docs/output.js");
 
-		if (!output.delete())
-			System.out.println("output.js did not exist");
-		output.createNewFile();
+		combineFiles(inputJSFiles, outputJSFile);
 
-		fileScanner = new Scanner(setup);
-		while (fileScanner.hasNextLine())
-			contents = contents + fileScanner.nextLine() + "\n";
-		contents += "\n";
+		File[] inputCSSFiles = { new File("./create/style.css") };
+		File outputCSSFile = new File("./docs/style.css");
 
-		fileScanner = new Scanner(source);
-		while (fileScanner.hasNextLine())
-			contents = contents + fileScanner.nextLine() + "\n";
-		contents += "\n";
-
-		fileScanner = new Scanner(structure);
-		while (fileScanner.hasNextLine())
-			contents = contents + fileScanner.nextLine() + "\n";
-		contents += "\n";
-
-		fileScanner = new Scanner(components);
-		while (fileScanner.hasNextLine())
-			contents = contents + fileScanner.nextLine() + "\n";
-
-		writer = new BufferedWriter(new FileWriter(output));
-		contentsScanner = new Scanner(contents);
-
-		while (contentsScanner.hasNextLine())
-			writer.write(contentsScanner.nextLine() + "\n");
-		writer.flush();
-
-		if (!styleOut.delete())
-			System.out.println("style.css did not exist");
-		styleOut.createNewFile();
-
-		fileScanner = new Scanner(styleIn);
-		contents = "";
-		while (fileScanner.hasNextLine())
-			contents = contents + fileScanner.nextLine() + "\n";
-
-		writer = new BufferedWriter(new FileWriter(styleOut));
-		contentsScanner = new Scanner(contents);
-
-		while (contentsScanner.hasNextLine())
-			writer.write(contentsScanner.nextLine() + "\n");
-		writer.flush();
+		combineFiles(inputCSSFiles, outputCSSFile);
 
 		Desktop.getDesktop().open(new File("./docs/index.html"));
 	}
