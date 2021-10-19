@@ -1,10 +1,10 @@
 class StateCycler {
     constructor(id, contents, className, states, state) {
         this.id = id;
-        contents = pu(contents); this.contents = contents;
+        this.contents = pu(contents);
 
         this.className = "state-cycler";
-        if (pu(className) !== "") this.className = this.className + " " + className;
+        if (pu(className) !== "") this.className += " " + className;
 
         this.states = ["disabled", "enabled"]; this.state = 0;
         if (pu(states) !== "") this.states = states;

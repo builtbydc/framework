@@ -13,6 +13,8 @@
 
 button {
     cursor: pointer;
+    border: none;
+    border-radius: 1vh;
 }
 .disabled {
     background: red;
@@ -20,13 +22,16 @@ button {
 .enabled {
     background: green;
 }
-
 .padded {
     padding: 5vh;
-    border: none;
 }
 .white-text {
     font-size: 2em;
     color: white;
+}
+#sc_1 {
+    position: absolute;
+    left: 5vh;
+    top: 5vh;
 }
 
