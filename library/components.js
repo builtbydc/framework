@@ -1,3 +1,15 @@
+//parse undefined
+function pu(text) {
+    if (text === undefined) text = "";
+    return text;
+}
+//concatenate array of strings
+function build(arr) {
+    let out = "";
+    for (var i = 0; i < arr.length; i++)
+        out += arr[i];
+    return out;
+}
 //space, open tag, close tag
 function sp() {
     return " ";
@@ -49,18 +61,6 @@ function waNE(waNE_a, waNE_b, attr, text) {
     if (waNE_a !== waNE_b) return wa(attr, text);
     else return "";
 }
-//parse undefined
-function pu(text) {
-    if (text === undefined) text = "";
-    return text;
-}
-
-function build(arr) {
-    let out = "";
-    for (var i = 0; i < arr.length; i++)
-        out += arr[i];
-    return out;
-}
 
 function Div(contents, className, id, other) {
     className = pu(className); id = pu(id);
@@ -73,7 +73,6 @@ function Div(contents, className, id, other) {
         ) + pu(contents) + cl("div")
     );
 }
-
 function Header(contents, className, id, other) {
     className = pu(className); id = pu(id);
     return (
@@ -85,7 +84,6 @@ function Header(contents, className, id, other) {
         ) + pu(contents) + cl("header")
     );
 }
-
 function Section(contents, className, id, other) {
     className = pu(className); id = pu(id);
     return (
@@ -97,7 +95,6 @@ function Section(contents, className, id, other) {
         ) + pu(contents) + cl("section")
     );
 }
-
 function A(href, target, contents, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 

@@ -7,20 +7,27 @@
 
 #contents {
     min-height: 100vh;
-
-    background: black;
 }
 
-button {
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    z-index: 1;
+}
+
+.state-cycler {
     cursor: pointer;
     border: none;
     border-radius: 1vh;
 }
-.disabled {
-    background: red;
-}
-.enabled {
-    background: green;
+#backgroundColorCycler {
+    position: absolute;
+    top: 5vh;
+    left: 5vh;
+    z-index: 2;
 }
 .padded {
     padding: 5vh;
@@ -29,8 +36,15 @@ button {
     font-size: 2em;
     color: white;
 }
-#sc_1 {
-    position: absolute;
-    left: 5vh;
-    top: 5vh;
+.black {
+    background-color: black;
+}
+.yellow {
+    background-color: yellow;
+}
+.blue {
+    background-color: blue;
+}
+.darker {
+    background: rgba(127,127,127,.5);
 }

@@ -1,3 +1,15 @@
+//parse undefined
+function pu(text) {
+    if (text === undefined) text = "";
+    return text;
+}
+//concatenate array of strings
+function build(arr) {
+    let out = "";
+    for (var i = 0; i < arr.length; i++)
+        out += arr[i];
+    return out;
+}
 //space, open tag, close tag
 function sp() {
     return " ";
@@ -49,18 +61,6 @@ function waNE(waNE_a, waNE_b, attr, text) {
     if (waNE_a !== waNE_b) return wa(attr, text);
     else return "";
 }
-//parse undefined
-function pu(text) {
-    if (text === undefined) text = "";
-    return text;
-}
-
-function build(arr) {
-    let out = "";
-    for (var i = 0; i < arr.length; i++)
-        out += arr[i];
-    return out;
-}
 
 function Div(contents, className, id, other) {
     className = pu(className); id = pu(id);
@@ -73,7 +73,6 @@ function Div(contents, className, id, other) {
         ) + pu(contents) + cl("div")
     );
 }
-
 function Header(contents, className, id, other) {
     className = pu(className); id = pu(id);
     return (
@@ -85,7 +84,6 @@ function Header(contents, className, id, other) {
         ) + pu(contents) + cl("header")
     );
 }
-
 function Section(contents, className, id, other) {
     className = pu(className); id = pu(id);
     return (
@@ -97,7 +95,6 @@ function Section(contents, className, id, other) {
         ) + pu(contents) + cl("section")
     );
 }
-
 function A(href, target, contents, divClassName, className, id, other) {
     id = pu(id); other = pu(other);
 
@@ -237,16 +234,16 @@ function B(contents) {
 }
 
 class StateCycler {
-    constructor(id, contents, className, states, state) {
+    constructor(id, contents, className, states, index) {
         this.id = id;
         this.contents = pu(contents);
 
         this.className = "state-cycler";
         if (pu(className) !== "") this.className += " " + className;
 
-        this.states = ["disabled", "enabled"]; this.state = 0;
+        this.states = ["disabled", "enabled"]; this.index = 0;
         if (pu(states) !== "") this.states = states;
-        if (pu(state) !== "") this.state = state;
+        if (pu(index) !== "") this.index = index;
     }
 
     create() {
@@ -256,14 +253,18 @@ class StateCycler {
     load() {
         return Button(
             this.contents, "NO_DIV",
-            this.className + " " + this.states[this.state],
+            this.className + " " + this.states[this.index],
             this.id, onClick(this.id + "." + "handleClick")
         );
     }
 
+    state() {
+        return this.states[this.index];
+    }
+
     cycle() {
-        this.state++;
-        this.state %= this.states.length;
+        this.index++;
+        this.index %= this.states.length;
         document.getElementById(this.id + "_container").innerHTML = this.load();
     }
 
@@ -274,9 +275,9 @@ class StateCycler {
     action() { }
 }
 
-const sc_1 = new StateCycler("sc_1", "hello", "padded white-text");
-sc_1.action = function () {
-
+const backgroundColorCycler = new StateCycler("backgroundColorCycler", "change", "padded darker white-text", ["black", "yellow", "blue"]);
+backgroundColorCycler.action = function () {
+    loadPage();
 }
 
 const pageTitle = "Example Page";
@@ -288,7 +289,8 @@ function loadPage() {
 
 function Structure() {
     return build([
-        sc_1.create(),
+        backgroundColorCycler.create(),
+        Div("", backgroundColorCycler.state(), "background")
     ]);
 }
 

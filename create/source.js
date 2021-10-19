@@ -1,4 +1,4 @@
-const sc_1 = new StateCycler("sc_1", "hello", "padded white-text");
-sc_1.action = function () {
-
+const backgroundColorCycler = new StateCycler("backgroundColorCycler", "change", "padded darker white-text", ["black", "yellow", "blue"]);
+backgroundColorCycler.action = function () {
+    loadPage();
 }
