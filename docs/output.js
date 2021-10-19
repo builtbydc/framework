@@ -35,7 +35,7 @@ function ttF(functionName, functionParameters) {
     return ttL(out);
 }
 function onClick(functionName, functionParameters) {
-    return "onclick=" + ttF(functionName, pu(functionParameters));
+    return "onclick=" + ttF(functionName, functionParameters);
 }
 //write attribute
 function wa(attr, text) {
@@ -58,43 +58,43 @@ function pu(text) {
 function build(arr) {
     let out = "";
     for (var i = 0; i < arr.length; i++)
-        out = out + arr[i];
+        out += arr[i];
     return out;
 }
 
 function Div(contents, className, id, other) {
-    className = pu(className); id = pu(id); other = pu(other);
+    className = pu(className); id = pu(id);
     return (
         op("div",
             waNE(id, "", "id", id) +
             waNE(className, "", "class", className) +
-            other
+            pu(other)
 
-        ) + contents + cl("div")
+        ) + pu(contents) + cl("div")
     );
 }
 
 function Header(contents, className, id, other) {
-    className = pu(className); id = pu(id); other = pu(other);
+    className = pu(className); id = pu(id);
     return (
         op("header",
             waNE(id, "", "id", id) +
             waNE(className, "", "class", className) +
-            other
+            pu(other)
 
-        ) + contents + cl("header")
+        ) + pu(contents) + cl("header")
     );
 }
 
 function Section(contents, className, id, other) {
-    className = pu(className); id = pu(id); other = pu(other);
+    className = pu(className); id = pu(id);
     return (
         op("section",
             waNE(id, "", "id", id) +
             waNE(className, "", "class", className) +
-            other
+            pu(other)
 
-        ) + contents + cl("section")
+        ) + pu(contents) + cl("section")
     );
 }
 
@@ -233,11 +233,7 @@ function Button(contents, divClassName, className, id, other) {
     }
 }
 function B(contents) {
-    return (
-        opNA("b") +
-        contents +
-        cl("b")
-    )
+    return opNA("b") + contents + cl("b");
 }
 
 class StateCycler {
