@@ -253,7 +253,7 @@ class StateCycler {
     load() {
         return Button(
             this.contents, "NO_DIV",
-            this.className + " " + this.states[this.index],
+            this.className + " state-" + this.states[this.index],
             this.id, onClick(this.id + "." + "handleClick")
         );
     }
@@ -275,7 +275,9 @@ class StateCycler {
     action() { }
 }
 
-const backgroundColorCycler = new StateCycler("backgroundColorCycler", "change", "padded darker white-text", ["black", "yellow", "blue"]);
+const backgroundColorCycler =
+    new StateCycler("backgroundColorCycler", "Press Me", "padded white-text", ["white", "yellow", "blue"]);
+
 backgroundColorCycler.action = function () {
     loadPage();
 }
@@ -290,7 +292,7 @@ function loadPage() {
 function Structure() {
     return build([
         backgroundColorCycler.create(),
-        Div("", backgroundColorCycler.state(), "background")
+        Div("", backgroundColorCycler.state(), "background"),
     ]);
 }
 

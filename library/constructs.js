@@ -18,7 +18,7 @@ class StateCycler {
     load() {
         return Button(
             this.contents, "NO_DIV",
-            this.className + " " + this.states[this.index],
+            this.className + " state-" + this.states[this.index],
             this.id, onClick(this.id + "." + "handleClick")
         );
     }

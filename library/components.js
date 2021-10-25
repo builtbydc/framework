@@ -232,3 +232,12 @@ function Button(contents, divClassName, className, id, other) {
 function B(contents) {
     return opNA("b") + contents + cl("b");
 }
+function Span(contents, className, id, other) {
+    className = pu(className); id = pu(id);
+    return op("span",
+        waNE(id, "", "id", id) +
+        waNE(className, "", "class", className) +
+        pu(other)
+
+    ) + contents + cl("span");
+}

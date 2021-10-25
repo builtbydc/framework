@@ -40,12 +40,12 @@ public class Compiler {
 		File[] inputJSFiles = { new File("./library/components.js"), new File("./library/constructs.js"),
 				new File("./create/source.js"), new File("./create/structure.js") };
 
-		File outputJSFile = new File("./docs/output.js");
+		File outputJSFile = new File("./docs/RO-output.js");
 
 		combineFiles(inputJSFiles, outputJSFile);
 
-		File[] inputCSSFiles = { new File("./create/style.css") };
-		File outputCSSFile = new File("./docs/style.css");
+		File[] inputCSSFiles = { new File("./library/default.css"), new File("./create/style.css") };
+		File outputCSSFile = new File("./docs/RO-output.css");
 
 		combineFiles(inputCSSFiles, outputCSSFile);
 

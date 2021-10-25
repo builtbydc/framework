@@ -8,6 +8,6 @@ function loadPage() {
 function Structure() {
     return build([
         backgroundColorCycler.create(),
-        Div("", backgroundColorCycler.state(), "background")
+        Div("", backgroundColorCycler.state(), "background"),
     ]);
 }
