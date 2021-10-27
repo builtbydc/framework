@@ -95,7 +95,7 @@ function Section(contents, className, id, other) {
         ) + pu(contents) + cl("section")
     );
 }
-function A(href, target, contents, divClassName, className, id, other) {
+function A(href, target, contents, className, id, divClassName, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
@@ -117,13 +117,13 @@ function A(href, target, contents, divClassName, className, id, other) {
         divClassName = pu(divClassName);
 
         return (Div(
-            A(href, target, contents, "NO_DIV", className, id, other),
+            A(href, target, contents, className, id, "NO_DIV", other),
             divClassName)
         );
 
     }
 }
-function H(size, text, divClassName, className, id, other) {
+function H(size, text, className, id, divClassName, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
@@ -142,13 +142,13 @@ function H(size, text, divClassName, className, id, other) {
         divClassName = pu(divClassName);
 
         return (Div(
-            H(size, text, "NO_DIV", className, id, other),
+            H(size, text, className, id, "NO_DIV", other),
             divClassName)
         );
 
     }
 }
-function Img(src, alt, width, height, divClassName, className, id, other) {
+function Img(src, alt, width, height, className, id, divClassName, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
@@ -171,13 +171,13 @@ function Img(src, alt, width, height, divClassName, className, id, other) {
         divClassName = pu(divClassName);
 
         return (Div(
-            Img(src, alt, width, height, "NO_DIV", className, id, other),
+            Img(src, alt, width, height, className, id, "NO_DIV", other),
             divClassName)
         );
 
     }
 }
-function P(text, divClassName, className, id, other) {
+function P(text, className, id, divClassName, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
@@ -197,13 +197,13 @@ function P(text, divClassName, className, id, other) {
         divClassName = pu(divClassName);
 
         return (Div(
-            P(text, "NO_DIV", className, id, other),
+            P(text, className, id, "NO_DIV", other),
             divClassName)
         );
 
     }
 }
-function Button(contents, divClassName, className, id, other) {
+function Button(contents, className, id, divClassName, other) {
     id = pu(id); other = pu(other);
 
     if (divClassName === "NO_DIV") {
@@ -223,7 +223,7 @@ function Button(contents, divClassName, className, id, other) {
         divClassName = pu(divClassName);
 
         return (Div(
-            Button(contents, "NO_DIV", className, id, other),
+            Button(contents, className, id, "NO_DIV", other),
             divClassName)
         );
 
@@ -231,6 +231,47 @@ function Button(contents, divClassName, className, id, other) {
 }
 function B(contents) {
     return opNA("b") + contents + cl("b");
+}
+function Span(contents, className, id, other) {
+    className = pu(className); id = pu(id);
+    return op("span",
+        waNE(id, "", "id", id) +
+        waNE(className, "", "class", className) +
+        pu(other)
+
+    ) + contents + cl("span");
+}
+function Iframe(src, srcdoc, title, width, height, className, id, divClassName, name, allow, sandbox, referrerpolicy, other) {
+    id = pu(id); name = pu(name); allow = pu(allow); sandbox = pu(sandbox); referrerpolicy = pu(referrerpolicy); other = pu(other);
+
+    if (divClassName === "NO_DIV") {
+        className = pu(className);
+
+        return (
+            op("iframe",
+                wa("src", src) +
+                waNE(srcdoc, "", "srcdoc", srcdoc) +
+                wa("title", title) +
+                wa("width", width) +
+                wa("height", height) +
+                waNE(id, "", "id", id) +
+                waNE(className, "", "class", className) +
+                waNE(name, "", "name", name) +
+                waNE(allow, "", "allow", allow) +
+                waNE(sandbox, "", "sandbox", sandbox) +
+                waNE(referrerpolicy, "", "referrerpolicy", referrerpolicy) +
+                pu(other)
+
+            ) + cl("iframe")
+        );
+    } else {
+        divClassName = pu(divClassName);
+
+        return (Div(
+            Iframe(src, srcdoc, title, width, height, className, id, "NO_DIV", name, allow, sandbox, referrerpolicy, other),
+            divClassName)
+        );
+    }
 }
 
 class StateCycler {
@@ -275,6 +316,25 @@ class StateCycler {
     action() { }
 }
 
+const pageTitle = "Testing Area";
+
+function loadPage() {
+    document.getElementById("page-title").innerHTML = pageTitle;
+    document.getElementById("contents").innerHTML = Structure();
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(function (registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(function (err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+    }
+
+}
+
 const backgroundColorCycler =
     new StateCycler("backgroundColorCycler", "Press Me", "padded white-text", ["white", "yellow", "blue"]);
 
@@ -282,17 +342,10 @@ backgroundColorCycler.action = function () {
     loadPage();
 }
 
-const pageTitle = "Example Page";
-
-function loadPage() {
-    document.getElementById("page-title").innerHTML = pageTitle;
-    document.getElementById("contents").innerHTML = Structure();
-}
-
 function Structure() {
     return build([
-        backgroundColorCycler.create(),
-        Div("", backgroundColorCycler.state(), "background"),
+        P("hello world", backgroundColorCycler.state()),
+        backgroundColorCycler.create()
     ]);
 }
 
