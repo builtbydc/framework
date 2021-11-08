@@ -1,3 +1,14 @@
-.yellow {
-    color:yellow;
+#newFlip-container {
+    position: relative;
+    top: 50px;
+    left: 50px;
+    width: 200px;
+    height: 200px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    background-color: black;
 }
