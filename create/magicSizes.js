@@ -1,3 +1,4 @@
+
 function loadMagicSizes() {
     document.getElementById("magic-sizes").innerHTML = build([
         magicSize("font-size", "text", "", 10, 13),
