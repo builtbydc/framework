@@ -480,6 +480,43 @@ function loadPage() {
         }, 750);
     });
 
+    document.getElementById("newFlip-container").addEventListener("touchstart", function (event) {
+        for (let i = 0; i < flipResolution; i++) {
+            document.getElementById("flip-particle-" + i).classList.remove("deanimate");
+        }
+        setTimeout(function () {
+            for (let i = 0; i < flipResolution; i++) {
+                document.getElementById("flip-particle-" + i).classList.add("animate");
+            }
+        }, 1);
+
+        setTimeout(function () {
+            for (let i = 0; i < flipResolution; i++) {
+                document.getElementById("flip-particle-" + i).classList.remove("animate");
+            }
+            for (let i = 0; i < flipResolution; i++) {
+                document.getElementById("flip-particle-" + i).classList.add("shown");
+            }
+        }, 750);
+    });
+    document.getElementById("newFlip-container").addEventListener("touchend", function (event) {
+        for (let i = 0; i < flipResolution; i++) {
+            document.getElementById("flip-particle-" + i).classList.remove("animate");
+        }
+        setTimeout(function () {
+            for (let i = 0; i < flipResolution; i++) {
+                document.getElementById("flip-particle-" + i).classList.add("deanimate");
+            }
+        }, 1);
+
+        setTimeout(function () {
+            for (let i = 0; i < flipResolution; i++) {
+                document.getElementById("flip-particle-" + i).classList.remove("shown");
+                document.getElementById("flip-particle-" + i).classList.remove("deanimate");
+            }
+        }, 750);
+    });
+
     document.getElementById("flipStyle").innerHTML = newFlip.animate();
 
 
