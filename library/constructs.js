@@ -1,13 +1,75 @@
-const flipResolution = 64;
-const visualDistance = 5.0;
+const flipParticleDensity = 64;
+const flipAnimationStep = 5; //must be a factor of 100
+const flipVisualDistance = 5.0;
+const flipStandardDimension = (flipVisualDistance - 0.5) / flipVisualDistance;
+const flipAnimationDuration = 375;
+var flipEntryTimeout;
+
+function hasFlipParticleClass(id, className) {
+    return document.getElementById(id + "-flip-particle-0").classList.contains(className);
+}
+function addFlipParticleClass(id, index, className) {
+    document.getElementById(id + "-flip-particle-" + index).classList.add(className);
+}
+function addFlipParticleClassAll(id, className) {
+    for (let i = 0; i < flipParticleDensity; i++)
+        addFlipParticleClass(id, i, className);
+}
+function removeFlipParticleClass(id, index, className) {
+    document.getElementById(id + "-flip-particle-" + index).classList.remove(className);
+}
+function removeFlipParticleClassAll(id, className) {
+    for (let i = 0; i < flipParticleDensity; i++)
+        removeFlipParticleClass(id, i, className);
+}
+
+function onFlipEntry(id) {
+    removeFlipParticleClassAll(id, "deanimate");
+    removeFlipParticleClassAll(id, "shown");
+
+    setTimeout(function () {
+        addFlipParticleClassAll(id, "animate");
+    }, 1); //1ms delay
+
+    flipEntryTimeout = setTimeout(function () {
+        if (hasFlipParticleClass(id, "animate")) {
+
+            removeFlipParticleClassAll(id, "animate");
+            addFlipParticleClassAll(id, "shown");
+
+        }
+    }, 2 * flipAnimationDuration);
+}
+
+function onFlipExit(id) {
+    if (hasFlipParticleClass(id, "animate")) {
+
+        removeFlipParticleClassAll(id, "animate");
+        clearTimeout(flipEntryTimeout);
+
+    } else {
+        setTimeout(function () {
+            addFlipParticleClassAll(id, "deanimate");
+        }, 1); //1ms delay
+
+        setTimeout(function () {
+            removeFlipParticleClassAll(id, "shown");
+            removeFlipParticleClassAll(id, "deanimate");
+        }, 2 * flipAnimationDuration);
+    }
+}
+
 class Flip {
 
-    constructor(id) {
+    constructor(id, backgroundColor1, backgroundColor2) {
         this.id = id;
 
+        this.backgroundColor1 = backgroundColor1;
+        this.backgroundColor2 = backgroundColor2;
+
         this.contents = [];
-        for (let i = 0; i < flipResolution; i++)
-            this.contents[i] = Div("", "flip-particle", "flip-particle-" + i);
+        for (let i = 0; i < flipParticleDensity; i++)
+            this.contents[i] = Div("", "flip-particle", this.id + "-flip-particle-" + i);
     }
 
     create() {
@@ -20,62 +82,91 @@ class Flip {
     animate() {
 
         let flipWidthAnimate = "";
-        for (let i = 0; i <= 100; i += 5) {
+        for (let i = 0; i <= 100; i += flipAnimationStep) {
             if (i != 100)
-                flipWidthAnimate += i + "% { width: " + (((visualDistance - 0.5) / visualDistance) * 100 / flipResolution) * Math.cos(i * (Math.PI / 200)) + "%;}\n";
+                flipWidthAnimate += "\t" + i + "% { width: " +
+                    (flipStandardDimension * 100 / flipParticleDensity) * Math.cos(i * (Math.PI / 200)) +
+                    "%;}\n";
             else
-                flipWidthAnimate += "100% { width: 0%;}\n"
+                flipWidthAnimate += "\t100% { width: 0%;}\n"
         }
 
         let flipParticleAnimate = "";
-        for (let i = 0; i < flipResolution; i++) {
+        for (let i = 0; i < flipParticleDensity; i++) {
             let flipHeightAnimate = "";
-            for (let j = 0; j <= 100; j += 5)
-                flipHeightAnimate += j + "% { height: " +
-                    (((visualDistance - 0.5) / visualDistance) * 100 * visualDistance) / (visualDistance + ((i / flipResolution) - 0.5) * Math.sin(j * Math.PI / 200)) +
-                    "%;}\n";
+            for (let j = 0; j <= 100; j += flipAnimationStep)
+                flipHeightAnimate += "\t" + j + "% { height: " +
+                    (flipStandardDimension * 100 * flipVisualDistance) / (flipVisualDistance + ((i / flipParticleDensity) - 0.5) *
+                        Math.sin(j * Math.PI / 200)) + "%;}\n";
 
             flipParticleAnimate += build([
-                "#flip-particle-" + i + ".animate {",
-                "   animation: fp" + i + "ha 375ms linear 0s 1, fp" + (flipResolution - 1 - i) + "ha 375ms linear 375ms 1 reverse, flip-width-animate 375ms linear 0s 2 alternate;",
-                "}",
+                "#" + this.id + "-flip-particle-" + i + ".animate {\n",
+                "\tanimation: " + this.id + "-fp" + i + "ha " + flipAnimationDuration + "ms linear 0s 1, " +
 
-                "#flip-particle-" + i + ".deanimate {",
-                "   animation: fp" + i + "ha 375ms linear 0s 1, fp" + (flipResolution - 1 - i) + "ha 375ms linear 375ms 1 reverse, flip-width-animate 375ms linear 0s 2 alternate;",
-                "}",
+                this.id + "-fp" + (flipParticleDensity - 1 - i) + "ha " + flipAnimationDuration + "ms linear " +
+                flipAnimationDuration + "ms 1 reverse, " +
 
-                "@keyframes fp" + i + "ha {",
+                "flip-width-animate " + flipAnimationDuration + "ms linear 0s 2 alternate;\n",
+                "}\n\n",
+
+                "#" + this.id + "-flip-particle-" + i + ".deanimate {\n",
+                "\tanimation: " + this.id + "-fp" + i + "ha " + flipAnimationDuration + "ms linear 0s 1, " +
+
+                this.id + "-fp" + (flipParticleDensity - 1 - i) + "ha " + flipAnimationDuration + "ms linear " +
+                flipAnimationDuration + "ms 1 reverse, " +
+
+                "flip-width-animate " + flipAnimationDuration + "ms linear 0s 2 alternate;\n",
+                "}\n\n",
+
+                "@keyframes " + this.id + "-fp" + i + "ha {\n",
                 flipHeightAnimate,
-                "}"
+                "}\n\n"
             ]);
         }
 
         return build([
             ".flip-particle {\n",
-            "   width: " + (((visualDistance - 0.5) / visualDistance) * 100 / flipResolution) + "%;\n",
-            "   height: " + ((visualDistance - 0.5) / visualDistance) * 100 + "%;\n",
-            "   background-color: gray;\n",
+            "    width: " + (flipStandardDimension * 100 / flipParticleDensity) + "%;\n",
+            "    height: " + (flipStandardDimension * 100) + "%;\n",
+            "    background-color: " + this.backgroundColor1 + ";\n",
             "}\n\n",
 
-            ".flip-particle.shown {",
-            "   background-color: white;",
-            "}",
+            ".flip-particle.shown {\n",
+            "    background-color: " + this.backgroundColor2 + ";\n",
+            "}\n\n",
 
-            ".flip-particle.animate {",
-            "   transition: background-color 0ms linear 375ms;",
-            "   background-color: white;",
-            "}",
-            ".flip-particle.deanimate {",
-            "   transition: background-color 0ms linear 375ms;",
-            "   background-color: gray;",
-            "}",
+            ".flip-particle.animate {\n",
+            "    transition: background-color 0ms linear " + flipAnimationDuration + "ms;\n",
+            "    background-color: " + this.backgroundColor2 + ";\n",
+            "}\n\n",
 
-            "@keyframes flip-width-animate {",
+            ".flip-particle.deanimate {\n",
+            "    transition: background-color 0ms linear " + flipAnimationDuration + "ms;\n",
+            "    background-color: " + this.backgroundColor1 + ";\n",
+            "}\n\n",
+
+            "@keyframes flip-width-animate {\n",
             flipWidthAnimate,
-            "}",
+            "}\n\n",
 
             flipParticleAnimate
         ]);
+    }
+
+    drive() {
+        let flipDriveId = this.id;
+        document.getElementById("newFlip-container").addEventListener("mouseenter", function (event) {
+            onFlipEntry(flipDriveId);
+        });
+        document.getElementById("newFlip-container").addEventListener("touchstart", function (event) {
+            onFlipEntry(flipDriveId);
+        });
+        document.getElementById("newFlip-container").addEventListener("mouseleave", function (event) {
+            onFlipExit(flipDriveId);
+        });
+        document.getElementById("newFlip-container").addEventListener("touchend", function (event) {
+            onFlipExit(flipDriveId);
+        });
     }
 }
 class StateCycler {

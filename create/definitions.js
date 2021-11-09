@@ -1,2 +1,2 @@
 const pageTitle = "Testing Area";
-const newFlip = new Flip("newFlip");
+const newFlip = new Flip("newFlip", "#ffbe0b", "#ff006e");
