@@ -61,22 +61,18 @@ function onFlipExit(id) {
 
 class Flip {
 
-    constructor(id, backgroundColor1, backgroundColor2, heightWidthRatio) {
+    constructor(id, backgroundColor1, backgroundColor2) {
         this.id = id;
 
         this.backgroundColor1 = backgroundColor1;
         this.backgroundColor2 = backgroundColor2;
 
-        this.heightWidthRatio = heightWidthRatio;
-        this.initialWidth = 1 - this.heightWidthRatio + (this.heightWidthRatio * flipStandardHeight);
+        this.heightWidthRatio;
+        this.initialWidth;
 
         this.contents = [];
         for (let i = 0; i < flipParticleDensity; i++)
             this.contents[i] = Div("", "flip-particle", this.id + "-flip-particle-" + i);
-    }
-
-    updateInitialWidth() {
-        this.initialWidth = 1 - this.heightWidthRatio + (this.heightWidthRatio * flipStandardHeight);
     }
 
     create() {
@@ -86,8 +82,34 @@ class Flip {
         );
     }
 
-    animate() {
+    drive() {
+        let flipDriveId = this.id;
+        document.getElementById("newFlip-container").addEventListener("mouseenter", function (event) {
+            onFlipEntry(flipDriveId);
+        });
+        document.getElementById("newFlip-container").addEventListener("touchstart", function (event) {
+            onFlipEntry(flipDriveId);
+        });
+        document.getElementById("newFlip-container").addEventListener("mouseleave", function (event) {
+            onFlipExit(flipDriveId);
+        });
+        document.getElementById("newFlip-container").addEventListener("touchend", function (event) {
+            onFlipExit(flipDriveId);
+        });
 
+        this.retrieveSize();
+    }
+
+    retrieveSize() {
+        this.heightWidthRatio = document.getElementById(this.id + "-container").clientHeight /
+            document.getElementById(this.id + "-container").clientWidth;
+
+        this.initialWidth = 1 - this.heightWidthRatio + (this.heightWidthRatio * flipStandardHeight);
+
+        document.getElementById("flipStyle").innerHTML = this.animate();
+    }
+
+    animate() {
         let flipWidthAnimate = "";
         for (let i = 0; i <= 100; i += flipAnimationStep) {
             if (i != 100)
@@ -158,22 +180,6 @@ class Flip {
 
             flipParticleAnimate
         ]);
-    }
-
-    drive() {
-        let flipDriveId = this.id;
-        document.getElementById("newFlip-container").addEventListener("mouseenter", function (event) {
-            onFlipEntry(flipDriveId);
-        });
-        document.getElementById("newFlip-container").addEventListener("touchstart", function (event) {
-            onFlipEntry(flipDriveId);
-        });
-        document.getElementById("newFlip-container").addEventListener("mouseleave", function (event) {
-            onFlipExit(flipDriveId);
-        });
-        document.getElementById("newFlip-container").addEventListener("touchend", function (event) {
-            onFlipExit(flipDriveId);
-        });
     }
 }
 class StateCycler {

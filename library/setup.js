@@ -16,7 +16,4 @@ function loadPage() {
     loadMagicSizes();
 
     newFlip.drive();
-    document.getElementById("flipStyle").innerHTML = newFlip.animate();
-
-
 }
