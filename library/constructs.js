@@ -1,7 +1,7 @@
 const flipParticleDensity = 64;
 const flipAnimationStep = 5; //must be a factor of 100
 const flipVisualDistance = 5.0;
-const flipStandardDimension = (flipVisualDistance - 0.5) / flipVisualDistance;
+const flipStandardHeight = (flipVisualDistance - 0.5) / flipVisualDistance;
 const flipAnimationDuration = 375;
 var flipEntryTimeout;
 
@@ -61,15 +61,22 @@ function onFlipExit(id) {
 
 class Flip {
 
-    constructor(id, backgroundColor1, backgroundColor2) {
+    constructor(id, backgroundColor1, backgroundColor2, heightWidthRatio) {
         this.id = id;
 
         this.backgroundColor1 = backgroundColor1;
         this.backgroundColor2 = backgroundColor2;
 
+        this.heightWidthRatio = heightWidthRatio;
+        this.initialWidth = 1 - this.heightWidthRatio + (this.heightWidthRatio * flipStandardHeight);
+
         this.contents = [];
         for (let i = 0; i < flipParticleDensity; i++)
             this.contents[i] = Div("", "flip-particle", this.id + "-flip-particle-" + i);
+    }
+
+    updateInitialWidth() {
+        this.initialWidth = 1 - this.heightWidthRatio + (this.heightWidthRatio * flipStandardHeight);
     }
 
     create() {
@@ -85,7 +92,7 @@ class Flip {
         for (let i = 0; i <= 100; i += flipAnimationStep) {
             if (i != 100)
                 flipWidthAnimate += "\t" + i + "% { width: " +
-                    (flipStandardDimension * 100 / flipParticleDensity) * Math.cos(i * (Math.PI / 200)) +
+                    (this.initialWidth * 100 / flipParticleDensity) * Math.cos(i * (Math.PI / 200)) +
                     "%;}\n";
             else
                 flipWidthAnimate += "\t100% { width: 0%;}\n"
@@ -96,7 +103,7 @@ class Flip {
             let flipHeightAnimate = "";
             for (let j = 0; j <= 100; j += flipAnimationStep)
                 flipHeightAnimate += "\t" + j + "% { height: " +
-                    (flipStandardDimension * 100 * flipVisualDistance) / (flipVisualDistance + ((i / flipParticleDensity) - 0.5) *
+                    (flipStandardHeight * 100 * flipVisualDistance) / (flipVisualDistance + ((i / flipParticleDensity) - 0.5) *
                         Math.sin(j * Math.PI / 200)) + "%;}\n";
 
             flipParticleAnimate += build([
@@ -126,8 +133,8 @@ class Flip {
 
         return build([
             ".flip-particle {\n",
-            "    width: " + (flipStandardDimension * 100 / flipParticleDensity) + "%;\n",
-            "    height: " + (flipStandardDimension * 100) + "%;\n",
+            "    width: " + (this.initialWidth * 100 / flipParticleDensity) + "%;\n",
+            "    height: " + (flipStandardHeight * 100) + "%;\n",
             "    background-color: " + this.backgroundColor1 + ";\n",
             "}\n\n",
 

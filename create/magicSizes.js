@@ -6,4 +6,8 @@ function loadMagicSizes() {
         magicSize("height", "", "yellow", 80, 10)
 
     ])
+
+    newFlip.heightWidthRatio = window.innerHeight / window.innerWidth;
+    newFlip.updateInitialWidth();
+    document.getElementById("flipStyle").innerHTML = newFlip.animate();
 }
