@@ -17,8 +17,35 @@
     background: white;
 }
 
-.flip-container {
+.card {
+    cursor: pointer;
+}
+
+.card-fragment-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.card-text-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: inherit;
+    width: inherit;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-text {
+    text-align: center;
 }

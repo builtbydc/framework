@@ -1,4 +1,5 @@
 function loadPage() {
+
     document.getElementById("page-title").innerHTML = pageTitle;
     document.getElementById("contents").innerHTML = Structure();
 
@@ -14,6 +15,7 @@ function loadPage() {
     }
 
     loadMagicSizes();
-
-    newFlip.drive();
+    loadCardPlacement();
+    loadCardStyle();
+    for(let i = 0; i < allCards.length; i++) allCards[i].drive();
 }

@@ -4,13 +4,8 @@
     -ms-user-select: none;
     user-select: none;
 }
-#newFlip-container {
-    position: relative;
-    top: 10vh;
-    left: 10vw;
-    width: 80vw;
-    height: 80vh;
-
-    border-radius: 10px;
-    background-color: #3a86ff;
+.card {
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
 }

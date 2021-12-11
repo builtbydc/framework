@@ -6,6 +6,4 @@ function loadMagicSizes() {
         magicSize("height", "", "yellow", 80, 10)
 
     ])
-
-    newFlip.retrieveSize();
 }
