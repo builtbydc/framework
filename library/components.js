@@ -62,6 +62,39 @@ function waNE(waNE_a, waNE_b, attr, text) {
     else return "";
 }
 
+function cssSelect(selector, contents) {
+    return(
+        selector + "{\n" +
+        contents +
+        "}\n"
+    );
+}
+
+function cssAttr(attribute, value) {
+    return "\t" + attribute + ":" + value + ";\n";
+}
+
+function toPercent(decimal) {
+    return (decimal * 100) + "%";
+}
+
+function cosQS(step) { //quarter scaled
+    return Math.cos(step * Math.PI / 200);
+}
+function sinQS(step) {
+    return Math.sin(step * Math.PI / 200);
+}
+
+function idHasClass(id, className) {
+    return document.getElementById(id).classList.contains(className);
+}
+function addClassToId(id, className) {
+    document.getElementById(id).classList.add(className);
+}
+function removeClassFromId(id, className) {
+    document.getElementById(id).classList.remove(className);
+}
+
 function Div(contents, className, id, other) {
     className = pu(className); id = pu(id);
     return (

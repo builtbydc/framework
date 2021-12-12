@@ -6,6 +6,24 @@
 }
 .card {
     position: absolute;
-    width: 10vw;
-    height: 10vw;
+    width: 2vw;
+    height: 2vw;
+}
+.card-fragment-container {
+    background-color: gray;
+}
+.card-fragment {
+    background-color: black;
+}
+.card-fragment.shown {
+    background-color: white;
+}
+.card-fragment.deanimate {
+    background-color: black;
+}
+.card-fragment.animate {
+    background-color: white;
+}
+.card-text.visible {
+    color: black;
 }

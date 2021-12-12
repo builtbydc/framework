@@ -1,102 +1,128 @@
-const cardFragmentDensity = 20;
-const cardAnimationStep = 5; //must be a factor of 100
-const vd = 8; //visual distance
-const cardStandardHeight = (vd - 0.5) / vd;
-const cardAnimationDuration = 375;
+const card_n = 16; //card fragment density
+const card_q = 10; //must be a factor of 100, card animation step
+const card_d = 8; //visual distance
+const card_h = (card_d - 0.5) / card_d; //card standard height
+const card_t = 375; //card animation duration
 
-function cardFragmentHasClass(id, className) {
-    return document.getElementById(id + "-card-fragment-0").classList.contains(className);
+function card_fac_all(id, className) { //fragment add class
+    for (let i = 0; i < card_n; i++) addClassToId(id + "-card-fragment-" + i, className);
 }
-function cardFragmentAddClass(id, index, className) {
-    document.getElementById(id + "-card-fragment-" + index).classList.add(className);
-}
-function cardFragmentAddClassAll(id, className) {
-    for (let i = 0; i < cardFragmentDensity; i++)
-        cardFragmentAddClass(id, i, className);
-}
-function cardFragmentRemoveClass(id, index, className) {
-    document.getElementById(id + "-card-fragment-" + index).classList.remove(className);
-}
-function cardFragmentRemoveClassAll(id, className) {
-    for (let i = 0; i < cardFragmentDensity; i++)
-        cardFragmentRemoveClass(id, i, className);
+function card_frc_all(id, className) { //fragment remove class
+    for (let i = 0; i < card_n; i++) removeClassFromId(id + "-card-fragment-" + i, className);
 }
 
-function addClassToId(id, className) {
-    document.getElementById(id).classList.add(className);
-}
+function card_enter(id) {
+    if(idHasClass(id + "-card-fragment-0", "deanimate")) return;
 
-function removeClassFromId(id, className) {
-    document.getElementById(id).classList.remove(className);
-}
-
-function onCardEntry(id) {
-
-    if(cardFragmentHasClass(id, "deanimate")) return;
-
-    cardFragmentAddClassAll(id, "animate");
+    card_fac_all(id, "animate");
 
     setTimeout(function () {
-        cardFragmentRemoveClassAll(id, "animate");
-        cardFragmentAddClassAll(id, "shown");
+        card_frc_all(id, "animate");
+        card_fac_all(id, "shown");
         addClassToId(id, "pointer");
         addClassToId(id + "-card-text", "visible");
-        if(!document.getElementById(id).classList.contains("mouseover")) onCardExit(id);
-    }, 2 * cardAnimationDuration);
+        if(!document.getElementById(id).classList.contains("mouseover")) card_exit(id);
+    }, 2 * card_t);
 }
 
-function onCardExit(id) {
-
-    if(cardFragmentHasClass(id, "animate")) return;
-    if(!cardFragmentHasClass(id, "shown")) return;
+function card_exit(id) {
+    if(idHasClass(id + "-card-fragment-0", "animate")) return;
+    if(!idHasClass(id + "-card-fragment-0", "shown")) return;
 
     removeClassFromId(id + "-card-text", "visible");
 
     setTimeout(function() {
-        cardFragmentAddClassAll(id, "deanimate");
+        card_fac_all(id, "deanimate");
     }, 15);
     
 
     setTimeout(function () {
-        cardFragmentRemoveClassAll(id, "deanimate");
-        cardFragmentRemoveClassAll(id, "shown");
+        card_frc_all(id, "deanimate");
+        card_frc_all(id, "shown");
         removeClassFromId(id, "pointer");
-    }, 2 * cardAnimationDuration);
+    }, 2 * card_t);
 }
 
-function loadCardStyle() {
-    let count = allCards.length;
-    for (let i = 0; i < count; i++)
-        allCards[i].getSize();
-
-    document.getElementById("cardStyle").innerHTML = allCards[0].animate();
-
-    /*
-    for (let i = 1; i < count; i++) {
-        document.getElementById("cardStyle").innerHTML += allCards[i].animate();
+function card_animate() {
+    let cardWidthAnimate = "";
+    let initialFragmentWidth = card_h / card_n;
+    for (let i = 0; i <= 100; i += card_q) {
+        if (i != 100) 
+            cardWidthAnimate += "\t" + i + "% { width: " +
+                toPercent( initialFragmentWidth * cosQS(i) ) + ";}\n";
+                
+        else cardWidthAnimate += "\t100% { width: 0%;}\n";
     }
-    */
+
+    let cardFragmentAnimate = "";
+    for (let i = 0; i < card_n; i++) {
+        let cardHeightAnimate = "";
+        for (let j = 0; j <= 100; j += card_q)
+            cardHeightAnimate += "\t" + j + "% { height: " +
+                toPercent( (card_d-0.5) / (card_d + ((i/card_n) - 0.5) * sinQS(j)) ) + ";}\n";
+
+        cardFragmentAnimate += build([
+            cssSelect(".card-fragment-" + i + ".animate",
+                cssAttr("animation", build([
+                    "fp" + i + "ha " + card_t + "ms linear 0s 1, ",
+                    "fp" + (card_n-1-i) + "ha " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
+                    "card-width-animate " + card_t + "ms linear 0s 2 alternate"
+                ]))
+            ), 
+
+            cssSelect(".card-fragment-" + i + ".deanimate",
+                cssAttr("animation", build([
+                    "fp" + i + "ha " + card_t + "ms linear 0s 1, ",
+                    "fp" + (card_n-1-i) + "ha " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
+                    "card-width-animate " + card_t + "ms linear 0s 2 alternate"
+                ]))
+            ),
+
+            cssSelect("@keyframes fp" + i + "ha",
+                cardHeightAnimate
+            )
+        ]);
+    }
+
+    document.getElementById("cardStyle").innerHTML = build([
+        cssSelect(".card-fragment", build([
+            cssAttr("width", toPercent(card_h / card_n)),
+            cssAttr("height", toPercent(card_h)),
+        ])),
+
+        cssSelect(".card-fragment.animate", build([
+            cssAttr("transition", "background-color 0ms linear " + card_t + "ms"),
+        ])),
+
+        cssSelect(".card-fragment.deanimate", build([
+            cssAttr("transition", "background-color 0ms linear " + card_t + "ms"),
+        ])),
+
+        cssSelect("@keyframes card-width-animate",
+            cardWidthAnimate
+        ),
+
+        cardFragmentAnimate,
+
+        cssSelect(".card-text.visible", build([
+            cssAttr("transition", "color 100ms linear")
+        ])),
+
+        cssSelect("card-text", build([
+            cssAttr("color", "transparent"),
+            cssAttr("transition", "color 100ms linear")
+        ]))
+    ]);
 }
 
 class Card {
 
-    constructor(id, color1, color2, backgroundColor, text, textColor, borderRadius) {
+    constructor(id, text) {
         this.id = id;
-
-        this.color1 = color1;
-        this.color2 = color2;
-        this.backgroundColor = backgroundColor;
-
         this.text = text;
-        this.textColor = textColor;
-
-        this.borderRadius = borderRadius;
-
-        this.heightWidthRatio;
-        this.initialWidth;
 
         this.contents = [];
-        for (let i = 0; i < cardFragmentDensity; i++)
+        for (let i = 0; i < card_n; i++)
             this.contents[i] = Div("", "card-fragment card-fragment-" + i, this.id + "-card-fragment-" + i);
     }
 
@@ -114,117 +140,21 @@ class Card {
     drive() {
         let cardDriveId = this.id;
         document.getElementById(cardDriveId).addEventListener("mouseenter", function (event) {
-            onCardEntry(cardDriveId);
+            card_enter(cardDriveId);
             document.getElementById(cardDriveId).classList.add("mouseover");
         });
         document.getElementById(cardDriveId).addEventListener("touchstart", function (event) {
-            onCardEntry(cardDriveId);
+            card_enter(cardDriveId);
             document.getElementById(cardDriveId).classList.add("mouseover");
         });
         document.getElementById(cardDriveId).addEventListener("mouseleave", function (event) {
-            onCardExit(cardDriveId);
+            card_exit(cardDriveId);
             document.getElementById(cardDriveId).classList.remove("mouseover");
         });
         document.getElementById(cardDriveId).addEventListener("touchend", function (event) {
-            onCardExit(cardDriveId);
+            card_exit(cardDriveId);
             document.getElementById(cardDriveId).classList.remove("mouseover");
         });
-
-        this.getSize();
-    }
-
-    getSize() {
-        this.heightWidthRatio = document.getElementById(this.id + "-fragment-container").clientHeight /
-            document.getElementById(this.id + "-fragment-container").clientWidth;
-
-        this.initialWidth = 1 - this.heightWidthRatio + (this.heightWidthRatio * cardStandardHeight);
-    }
-
-    animate() {
-        let cardWidthAnimate = "";
-        for (let i = 0; i <= 100; i += cardAnimationStep) {
-            if (i != 100)
-                cardWidthAnimate += "\t" + i + "% { width: " +
-                    (this.initialWidth * 100 / cardFragmentDensity) * Math.cos(i * (Math.PI / 200)) +
-                    "%;}\n";
-            else
-                cardWidthAnimate += "\t100% { width: 0%;}\n"
-        }
-
-        let cardFragmentAnimate = "";
-        for (let i = 0; i < cardFragmentDensity; i++) {
-            let cardHeightAnimate = "";
-            for (let j = 0; j <= 100; j += cardAnimationStep)
-                cardHeightAnimate += "\t" + j + "% { height: " +
-                    (cardStandardHeight * 100 * vd) / (vd + ((i / cardFragmentDensity) - 0.5) *
-                        Math.sin(j * Math.PI / 200)) + "%;}\n";
-
-            cardFragmentAnimate += build([
-                ".card-fragment-" + i + ".animate {\n",
-                "\tanimation: fp" + i + "ha " + cardAnimationDuration + "ms linear 0s 1, " +
-
-                "fp" + (cardFragmentDensity - 1 - i) + "ha " + cardAnimationDuration + "ms linear " +
-                cardAnimationDuration + "ms 1 reverse, " +
-
-                "card-width-animate " + cardAnimationDuration + "ms linear 0s 2 alternate;\n",
-                "}\n\n",
-
-                ".card-fragment-" + i + ".deanimate {\n",
-                "\tanimation: fp" + i + "ha " + cardAnimationDuration + "ms linear 0s 1, " +
-
-                "fp" + (cardFragmentDensity - 1 - i) + "ha " + cardAnimationDuration + "ms linear " +
-                cardAnimationDuration + "ms 1 reverse, " +
-
-                "card-width-animate " + cardAnimationDuration + "ms linear 0s 2 alternate;\n",
-                "}\n\n",
-
-                "@keyframes fp" + i + "ha {\n",
-                cardHeightAnimate,
-                "}\n\n"
-            ]);
-        }
-
-        return build([
-            ".card-fragment-container {\n",
-            "    border-radius: " + this.borderRadius + ";\n",
-            "    background-color: " + this.backgroundColor + ";\n",
-            "}\n\n",
-
-            ".card-fragment {\n",
-            "    width: " + (this.initialWidth * 100 / cardFragmentDensity) + "%;\n",
-            "    height: " + (cardStandardHeight * 100) + "%;\n",
-            "    background-color: " + this.color1 + ";\n",
-            "}\n\n",
-
-            ".card-fragment.shown {\n",
-            "    background-color: " + this.color2 + ";\n",
-            "}\n\n",
-
-            ".card-fragment.animate {\n",
-            "    transition: background-color 0ms linear " + cardAnimationDuration + "ms;\n",
-            "    background-color: " + this.color2 + ";\n",
-            "}\n\n",
-
-            ".card-fragment.deanimate {\n",
-            "    transition: background-color 0ms linear " + cardAnimationDuration + "ms;\n",
-            "    background-color: " + this.color1 + ";\n",
-            "}\n\n",
-
-            "@keyframes card-width-animate {\n",
-            cardWidthAnimate,
-            "}\n\n",
-
-            cardFragmentAnimate,
-
-            ".card-text.visible {\n",
-            "    color: " + this.textColor + ";\n",
-            "    transition: color 100ms linear;\n",
-            "}\n",
-            ".card-text {\n",
-            "    color: transparent;\n",
-            "    transition: color 100ms linear;\n",
-            "}\n"
-        ]);
     }
 }
 

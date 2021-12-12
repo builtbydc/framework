@@ -15,7 +15,8 @@ function loadPage() {
     }
 
     loadMagicSizes();
+    
     loadCardPlacement();
-    loadCardStyle();
+    card_animate();
     for(let i = 0; i < allCards.length; i++) allCards[i].drive();
 }
