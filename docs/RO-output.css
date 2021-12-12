@@ -58,23 +58,21 @@
 }
 .card {
     position: absolute;
-    width: 2vw;
-    height: 2vw;
 }
 .card-fragment-container {
-    background-color: gray;
+    background-color: #fbff12;
 }
 .card-fragment {
-    background-color: black;
+    background-color: #41ead4;
 }
 .card-fragment.shown {
-    background-color: white;
+    background-color: #ff206e;
 }
 .card-fragment.deanimate {
-    background-color: black;
+    background-color: #41ead4;
 }
 .card-fragment.animate {
-    background-color: white;
+    background-color: #ff206e;
 }
 .card-text.visible {
     color: black;

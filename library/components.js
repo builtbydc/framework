@@ -78,6 +78,14 @@ function toPercent(decimal) {
     return (decimal * 100) + "%";
 }
 
+function toVW(decimal) {
+    return (decimal * 100) + "vw";
+}
+
+function ms(t) {
+    return t + "ms ";
+}
+
 function cosQS(step) { //quarter scaled
     return Math.cos(step * Math.PI / 200);
 }

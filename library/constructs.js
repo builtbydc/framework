@@ -1,8 +1,8 @@
-const card_n = 16; //card fragment density
+const card_n = 20; //card fragment density
 const card_q = 10; //must be a factor of 100, card animation step
-const card_d = 8; //visual distance
+const card_d = 5; //visual distance
 const card_h = (card_d - 0.5) / card_d; //card standard height
-const card_t = 375; //card animation duration
+const card_t = 400; //card animation duration
 
 function card_fac_all(id, className) { //fragment add class
     for (let i = 0; i < card_n; i++) addClassToId(id + "-card-fragment-" + i, className);
@@ -64,21 +64,21 @@ function card_animate() {
         cardFragmentAnimate += build([
             cssSelect(".card-fragment-" + i + ".animate",
                 cssAttr("animation", build([
-                    "fp" + i + "ha " + card_t + "ms linear 0s 1, ",
-                    "fp" + (card_n-1-i) + "ha " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
+                    "card_h" + i + " " + card_t + "ms linear 0s 1, ",
+                    "card_h" + (card_n-1-i) + " " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
                     "card-width-animate " + card_t + "ms linear 0s 2 alternate"
                 ]))
             ), 
 
             cssSelect(".card-fragment-" + i + ".deanimate",
                 cssAttr("animation", build([
-                    "fp" + i + "ha " + card_t + "ms linear 0s 1, ",
-                    "fp" + (card_n-1-i) + "ha " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
+                    "card_h" + i + " " + card_t + "ms linear 0s 1, ",
+                    "card_h" + (card_n-1-i) + " " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
                     "card-width-animate " + card_t + "ms linear 0s 2 alternate"
                 ]))
             ),
 
-            cssSelect("@keyframes fp" + i + "ha",
+            cssSelect("@keyframes card_h" + i,
                 cardHeightAnimate
             )
         ]);

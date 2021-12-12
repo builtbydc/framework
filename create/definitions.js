@@ -1,10 +1,11 @@
 const pageTitle = "Testing Area";
 const allCards = [];
 
-const cardsPerRow = 50;
+const cardsPerRow = 20;
+const rows = cardsPerRow / 2;
 
 function initCards() {
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < rows; i++) {
         for(let j = 0; j < cardsPerRow; j++) {
             allCards[cardsPerRow*i + j] = new Card("card" + (cardsPerRow*i + j), "");
         }
@@ -13,14 +14,17 @@ function initCards() {
 
 function loadCardPlacement() {
     let placement = "";
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < rows; i++) {
         for(let j = 0; j < cardsPerRow; j++) {
-            placement += ("#card" + (cardsPerRow*i + j) + " {\n" +
-                "   top: " + (i*(100/cardsPerRow)) + "vw;\n" +
-                "   left: " + (j*(100/cardsPerRow)) + "vw;\n" +
-                "}\n");
+            placement += cssSelect("#card" + (cardsPerRow * i + j), build([
+                cssAttr("top", toVW(i / cardsPerRow)),
+                cssAttr("left", toVW(j / cardsPerRow))
+            ]));
         }
     }
-
+    placement += cssSelect(".card", build([
+        cssAttr("width", toVW(1.0 / cardsPerRow)),
+        cssAttr("height", toVW(1.0 / cardsPerRow))
+    ]))
     document.getElementById("cardPlacement").innerHTML = placement;
 }

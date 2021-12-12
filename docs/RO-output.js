@@ -78,6 +78,14 @@ function toPercent(decimal) {
     return (decimal * 100) + "%";
 }
 
+function toVW(decimal) {
+    return (decimal * 100) + "vw";
+}
+
+function ms(t) {
+    return t + "ms ";
+}
+
 function cosQS(step) { //quarter scaled
     return Math.cos(step * Math.PI / 200);
 }
@@ -307,11 +315,11 @@ function Iframe(src, srcdoc, title, width, height, className, id, divClassName, 
     }
 }
 
-const card_n = 16; //card fragment density
+const card_n = 20; //card fragment density
 const card_q = 10; //must be a factor of 100, card animation step
-const card_d = 8; //visual distance
+const card_d = 5; //visual distance
 const card_h = (card_d - 0.5) / card_d; //card standard height
-const card_t = 375; //card animation duration
+const card_t = 400; //card animation duration
 
 function card_fac_all(id, className) { //fragment add class
     for (let i = 0; i < card_n; i++) addClassToId(id + "-card-fragment-" + i, className);
@@ -373,21 +381,21 @@ function card_animate() {
         cardFragmentAnimate += build([
             cssSelect(".card-fragment-" + i + ".animate",
                 cssAttr("animation", build([
-                    "fp" + i + "ha " + card_t + "ms linear 0s 1, ",
-                    "fp" + (card_n-1-i) + "ha " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
+                    "card_h" + i + " " + card_t + "ms linear 0s 1, ",
+                    "card_h" + (card_n-1-i) + " " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
                     "card-width-animate " + card_t + "ms linear 0s 2 alternate"
                 ]))
             ), 
 
             cssSelect(".card-fragment-" + i + ".deanimate",
                 cssAttr("animation", build([
-                    "fp" + i + "ha " + card_t + "ms linear 0s 1, ",
-                    "fp" + (card_n-1-i) + "ha " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
+                    "card_h" + i + " " + card_t + "ms linear 0s 1, ",
+                    "card_h" + (card_n-1-i) + " " + card_t + "ms linear " + card_t + "ms 1 reverse, ",
                     "card-width-animate " + card_t + "ms linear 0s 2 alternate"
                 ]))
             ),
 
-            cssSelect("@keyframes fp" + i + "ha",
+            cssSelect("@keyframes card_h" + i,
                 cardHeightAnimate
             )
         ]);
@@ -533,10 +541,11 @@ function magicSize(type, id, className, m_vw, d_vh) {
 const pageTitle = "Testing Area";
 const allCards = [];
 
-const cardsPerRow = 50;
+const cardsPerRow = 20;
+const rows = cardsPerRow / 2;
 
 function initCards() {
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < rows; i++) {
         for(let j = 0; j < cardsPerRow; j++) {
             allCards[cardsPerRow*i + j] = new Card("card" + (cardsPerRow*i + j), "");
         }
@@ -545,15 +554,18 @@ function initCards() {
 
 function loadCardPlacement() {
     let placement = "";
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < rows; i++) {
         for(let j = 0; j < cardsPerRow; j++) {
-            placement += ("#card" + (cardsPerRow*i + j) + " {\n" +
-                "   top: " + (i*(100/cardsPerRow)) + "vw;\n" +
-                "   left: " + (j*(100/cardsPerRow)) + "vw;\n" +
-                "}\n");
+            placement += cssSelect("#card" + (cardsPerRow * i + j), build([
+                cssAttr("top", toVW(i / cardsPerRow)),
+                cssAttr("left", toVW(j / cardsPerRow))
+            ]));
         }
     }
-
+    placement += cssSelect(".card", build([
+        cssAttr("width", toVW(1.0 / cardsPerRow)),
+        cssAttr("height", toVW(1.0 / cardsPerRow))
+    ]))
     document.getElementById("cardPlacement").innerHTML = placement;
 }
 
