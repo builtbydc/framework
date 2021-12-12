@@ -1,5 +1,5 @@
-const cardFragmentDensity = 10;
-const cardAnimationStep = 10; //must be a factor of 100
+const cardFragmentDensity = 20;
+const cardAnimationStep = 5; //must be a factor of 100
 const vd = 8; //visual distance
 const cardStandardHeight = (vd - 0.5) / vd;
 const cardAnimationDuration = 375;
@@ -39,6 +39,7 @@ function onCardEntry(id) {
     setTimeout(function () {
         cardFragmentRemoveClassAll(id, "animate");
         cardFragmentAddClassAll(id, "shown");
+        addClassToId(id, "pointer");
         addClassToId(id + "-card-text", "visible");
         if(!document.getElementById(id).classList.contains("mouseover")) onCardExit(id);
     }, 2 * cardAnimationDuration);
@@ -59,6 +60,7 @@ function onCardExit(id) {
     setTimeout(function () {
         cardFragmentRemoveClassAll(id, "deanimate");
         cardFragmentRemoveClassAll(id, "shown");
+        removeClassFromId(id, "pointer");
     }, 2 * cardAnimationDuration);
 }
 
@@ -69,9 +71,11 @@ function loadCardStyle() {
 
     document.getElementById("cardStyle").innerHTML = allCards[0].animate();
 
+    /*
     for (let i = 1; i < count; i++) {
         document.getElementById("cardStyle").innerHTML += allCards[i].animate();
     }
+    */
 }
 
 class Card {
@@ -93,7 +97,7 @@ class Card {
 
         this.contents = [];
         for (let i = 0; i < cardFragmentDensity; i++)
-            this.contents[i] = Div("", "card-fragment", this.id + "-card-fragment-" + i);
+            this.contents[i] = Div("", "card-fragment card-fragment-" + i, this.id + "-card-fragment-" + i);
     }
 
     create() {
@@ -156,52 +160,52 @@ class Card {
                         Math.sin(j * Math.PI / 200)) + "%;}\n";
 
             cardFragmentAnimate += build([
-                "#" + this.id + "-card-fragment-" + i + ".animate {\n",
-                "\tanimation: " + this.id + "-fp" + i + "ha " + cardAnimationDuration + "ms linear 0s 1, " +
+                ".card-fragment-" + i + ".animate {\n",
+                "\tanimation: fp" + i + "ha " + cardAnimationDuration + "ms linear 0s 1, " +
 
-                this.id + "-fp" + (cardFragmentDensity - 1 - i) + "ha " + cardAnimationDuration + "ms linear " +
+                "fp" + (cardFragmentDensity - 1 - i) + "ha " + cardAnimationDuration + "ms linear " +
                 cardAnimationDuration + "ms 1 reverse, " +
 
                 "card-width-animate " + cardAnimationDuration + "ms linear 0s 2 alternate;\n",
                 "}\n\n",
 
-                "#" + this.id + "-card-fragment-" + i + ".deanimate {\n",
-                "\tanimation: " + this.id + "-fp" + i + "ha " + cardAnimationDuration + "ms linear 0s 1, " +
+                ".card-fragment-" + i + ".deanimate {\n",
+                "\tanimation: fp" + i + "ha " + cardAnimationDuration + "ms linear 0s 1, " +
 
-                this.id + "-fp" + (cardFragmentDensity - 1 - i) + "ha " + cardAnimationDuration + "ms linear " +
+                "fp" + (cardFragmentDensity - 1 - i) + "ha " + cardAnimationDuration + "ms linear " +
                 cardAnimationDuration + "ms 1 reverse, " +
 
                 "card-width-animate " + cardAnimationDuration + "ms linear 0s 2 alternate;\n",
                 "}\n\n",
 
-                "@keyframes " + this.id + "-fp" + i + "ha {\n",
+                "@keyframes fp" + i + "ha {\n",
                 cardHeightAnimate,
                 "}\n\n"
             ]);
         }
 
         return build([
-            "#" + this.id + "-fragment-container {\n",
+            ".card-fragment-container {\n",
             "    border-radius: " + this.borderRadius + ";\n",
             "    background-color: " + this.backgroundColor + ";\n",
             "}\n\n",
 
-            "[id^=" + this.id + "-card-fragment] {\n",
+            ".card-fragment {\n",
             "    width: " + (this.initialWidth * 100 / cardFragmentDensity) + "%;\n",
             "    height: " + (cardStandardHeight * 100) + "%;\n",
             "    background-color: " + this.color1 + ";\n",
             "}\n\n",
 
-            "[id^=" + this.id + "-card-fragment].shown {\n",
+            ".card-fragment.shown {\n",
             "    background-color: " + this.color2 + ";\n",
             "}\n\n",
 
-            "[id^=" + this.id + "-card-fragment].animate {\n",
+            ".card-fragment.animate {\n",
             "    transition: background-color 0ms linear " + cardAnimationDuration + "ms;\n",
             "    background-color: " + this.color2 + ";\n",
             "}\n\n",
 
-            "[id^=" + this.id + "-card-fragment].deanimate {\n",
+            ".card-fragment.deanimate {\n",
             "    transition: background-color 0ms linear " + cardAnimationDuration + "ms;\n",
             "    background-color: " + this.color1 + ";\n",
             "}\n\n",
@@ -212,11 +216,11 @@ class Card {
 
             cardFragmentAnimate,
 
-            "#" + this.id + "-card-text.visible {\n",
+            ".card-text.visible {\n",
             "    color: " + this.textColor + ";\n",
             "    transition: color 100ms linear;\n",
             "}\n",
-            "#" + this.id + "-card-text {\n",
+            ".card-text {\n",
             "    color: transparent;\n",
             "    transition: color 100ms linear;\n",
             "}\n"
